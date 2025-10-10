@@ -235,11 +235,30 @@ const MainTabs = () => {
 
   return (
     <Tab.Navigator
-      tabBar={props => <CustomTabBar {...props} />}
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          display: 'none',
+          backgroundColor: theme.colors.surface,
+          borderTopColor: theme.colors.border,
+          borderTopWidth: 1,
+          height: Platform.OS === 'ios' ? 90 : 70,
+          paddingBottom: Platform.OS === 'ios' ? 20 : 10,
+          paddingTop: 10,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          elevation: 8,
+        },
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.textSecondary,
+        tabBarLabelStyle: {
+          fontSize: 10,
+          fontFamily: theme.typography.fontFamily.medium,
+          marginTop: 4,
+        },
+        tabBarIconStyle: {
+          marginTop: 4,
         },
       }}
     >
@@ -269,7 +288,7 @@ const MainTabs = () => {
         options={{
           tabBarLabel: 'Notifications',
           tabBarIcon: ({ color, size }) => (
-            <View>
+            <View style={{ position: 'relative' }}>
               <MaterialIcons name="notifications" size={size} color={color} />
               {unreadCount > 0 && (
                 <View style={{

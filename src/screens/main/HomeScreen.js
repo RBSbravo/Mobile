@@ -121,7 +121,7 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right', 'bottom']}>
       <ScreenHeader
         leftIcon={<View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: paperTheme.colors.primary, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>{user?.firstname ? user.firstname.charAt(0).toUpperCase() : 'U'}</Text></View>}
         title={`Welcome, ${user?.firstname || 'User'}!`}
@@ -131,9 +131,7 @@ const HomeScreen = ({ navigation }) => {
         contentContainerStyle={[
           styles.scrollContent, 
           { 
-            padding: isTablet ? 32 : 16,
-            paddingBottom: Platform.OS === 'ios' ? 110 : 90, // Account for tab bar height
-            ...(Platform.OS === 'web' && { paddingBottom: 90 })
+            padding: isTablet ? 32 : 16
           }
         ]}
         showsVerticalScrollIndicator={false}
