@@ -417,7 +417,13 @@ const ProfileScreen = ({ navigation }) => {
         </View>
       </View>
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[
+          styles.scrollContent,
+          {
+            paddingBottom: Platform.OS === 'ios' ? 110 : 90, // Account for tab bar height
+            ...(Platform.OS === 'web' && { paddingBottom: 90 })
+          }
+        ]}
         showsVerticalScrollIndicator={false}
         bounces={false}
       >

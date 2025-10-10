@@ -295,7 +295,11 @@ const NotificationsScreen = () => {
           refreshing={loading}
           onRefresh={fetchNotifications}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: isTablet ? 32 : 12, paddingBottom: isTablet ? 32 : 16 }}
+          contentContainerStyle={{ 
+            paddingHorizontal: isTablet ? 32 : 12, 
+            paddingBottom: Platform.OS === 'ios' ? 110 : 90, // Account for tab bar height
+            ...(Platform.OS === 'web' && { paddingBottom: 90 })
+          }}
         />
       )}
     </SafeAreaView>
