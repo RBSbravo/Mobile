@@ -185,22 +185,27 @@ const ProfileStack = () => {
 };
 
 // Auth Stack
-const AuthStack = () => (
-  <Stack.Navigator
-    screenOptions={{
-      headerShown: false,
-    }}
-  >
-    <Stack.Screen name="Login" component={LoginScreen} />
-    <Stack.Screen name="Register" component={RegisterScreen} />
-    <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-  </Stack.Navigator>
-);
+const AuthStack = () => {
+  console.log('AuthStack rendered - showing login screen');
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+    </Stack.Navigator>
+  );
+};
 
 // Main Tab Navigator
 const MainTabs = () => {
   const { user } = useAuth();
   const { unreadCount, refreshUnreadCount } = useNotification();
+
+  console.log('MainTabs rendered - user:', user?.email, 'unreadCount:', unreadCount);
 
   useEffect(() => {
     const fetchCount = async () => {
@@ -292,9 +297,30 @@ const MainTabs = () => {
 const AppNavigator = () => {
   const { isAuthenticated, loading, logoutLoading, loginLoading } = useAuth();
 
+  // Debug logging
+  console.log('AppNavigator Debug:', {
+    loading,
+    isAuthenticated,
+    logoutLoading,
+    loginLoading
+  });
+
   if (loading) {
-    // You might want to return a loading spinner here
-    return null;
+    return (
+      <View style={{ 
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        backgroundColor: '#F5F5F5' 
+      }}>
+        <Text style={{ fontSize: 18, color: '#333', marginBottom: 10 }}>
+          Loading...
+        </Text>
+        <Text style={{ fontSize: 14, color: '#666' }}>
+          Checking authentication status
+        </Text>
+      </View>
+    );
   }
 
   return (
