@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   Platform as RNPlatform,
   useWindowDimensions,
+  Dimensions,
 } from 'react-native';
 import {
   Searchbar,
@@ -225,16 +226,16 @@ const TasksScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
-      <ScreenHeader
-        leftIcon={<MaterialIcons name="assignment" size={28} color={paperTheme.colors.primary} />}
-        title="My Tasks"
-        subtitle="Manage your tasks here"
-      />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={RNPlatform.OS === 'ios' ? 'padding' : undefined}
+        behavior={RNPlatform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={80}
       >
+        <ScreenHeader
+          leftIcon={<MaterialIcons name="assignment" size={28} color={paperTheme.colors.primary} />}
+          title="My Tasks"
+          subtitle="Manage your tasks here"
+        />
         <Button
           mode="outlined"
           icon="plus"
