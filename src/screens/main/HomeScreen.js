@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, useWindowDimensions, Platform } from 'react-native';
+import { View, StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, useWindowDimensions, Platform, KeyboardAvoidingView } from 'react-native';
 import { Text, Card, useTheme, Snackbar } from 'react-native-paper';
 import { theme as customTheme, styles as globalStyles } from '../../theme';
 import { useAuth } from '../../context/AuthContext';
@@ -121,17 +121,21 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <View style={{ flex: 1, backgroundColor: paperTheme.colors.background }}>
-      <ScreenHeader
-        leftIcon={<View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: paperTheme.colors.primary, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>{user?.firstname ? user.firstname.charAt(0).toUpperCase() : 'U'}</Text></View>}
-        title={`Welcome, ${user?.firstname || 'User'}!`}
-        subtitle={"Here's a look at your day."}
-      />
-      <ScrollView 
-        style={{ flex: 1 }}
-        contentContainerStyle={{ padding: isTablet ? 32 : 16 }}
-        showsVerticalScrollIndicator={false}
-      >
+    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+        <ScreenHeader
+          leftIcon={<View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: paperTheme.colors.primary, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>{user?.firstname ? user.firstname.charAt(0).toUpperCase() : 'U'}</Text></View>}
+          title={`Welcome, ${user?.firstname || 'User'}!`}
+          subtitle={"Here's a look at your day."}
+        />
+        <ScrollView 
+          style={{ flex: 1 }}
+          contentContainerStyle={{ 
+            padding: isTablet ? 32 : 16,
+            ...(Platform.OS === 'web' && { minHeight: 'calc(100vh - 120px)' })
+          }}
+          showsVerticalScrollIndicator={false}
+        >
         <View style={{ marginVertical: customTheme.spacing.lg, backgroundColor: paperTheme.colors.border, height: 1, width: '100%' }} />
         <View style={{
           backgroundColor: paperTheme.colors.primaryContainer,
@@ -172,7 +176,8 @@ const HomeScreen = ({ navigation }) => {
             </Card>
           )}
         </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <Snackbar
         visible={!!error}
         onDismiss={() => setError("")}
@@ -181,7 +186,7 @@ const HomeScreen = ({ navigation }) => {
       >
         {error}
       </Snackbar>
-    </View>
+    </SafeAreaView>
   );
 };
 

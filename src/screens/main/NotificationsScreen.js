@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity, SafeAreaView, useWindowDimensions, Platform } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, SafeAreaView, useWindowDimensions, Platform, KeyboardAvoidingView } from 'react-native';
 import { Text, Chip, Button, ActivityIndicator, useTheme } from 'react-native-paper';
 import { theme as customTheme, styles as globalStyles } from '../../theme';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -248,7 +248,8 @@ const NotificationsScreen = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: paperTheme.colors.background }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
       <ScreenHeader
         leftIcon={<MaterialIcons name="notifications" size={28} color={paperTheme.colors.primary} />}
         title="Notifications"
@@ -296,10 +297,14 @@ const NotificationsScreen = () => {
           onRefresh={fetchNotifications}
           showsVerticalScrollIndicator={false}
           style={{ flex: 1 }}
-          contentContainerStyle={{ paddingHorizontal: isTablet ? 32 : 12, paddingBottom: isTablet ? 32 : 16 }}
+          contentContainerStyle={[
+            { paddingHorizontal: isTablet ? 32 : 12, paddingBottom: isTablet ? 32 : 16 },
+            Platform.OS === 'web' && { minHeight: 'calc(100vh - 120px)' }
+          ]}
         />
       )}
-    </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

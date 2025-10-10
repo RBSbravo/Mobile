@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, Platform } from 'react-native';
+import { View, StyleSheet, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
 import { Text, Card, Button, Avatar, useTheme, Dialog, Portal, ActivityIndicator, Title, Caption, TouchableRipple, Switch, Snackbar, TextInput, HelperText } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme, styles as globalStyles } from '../../theme';
@@ -218,7 +218,8 @@ const ProfileScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: paperTheme.colors.background }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
       <Portal>
         <Dialog 
           visible={logoutDialogVisible} 
@@ -418,7 +419,10 @@ const ProfileScreen = ({ navigation }) => {
       </View>
       <ScrollView 
         style={{ flex: 1 }}
-        contentContainerStyle={{ padding: 16 }}
+        contentContainerStyle={{ 
+          padding: 16,
+          ...(Platform.OS === 'web' && { minHeight: 'calc(100vh - 120px)' })
+        }}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.section}>
@@ -451,6 +455,7 @@ const ProfileScreen = ({ navigation }) => {
           </TouchableRipple>
         </View>
       </ScrollView>
+      </KeyboardAvoidingView>
       <Snackbar
         visible={!!error}
         onDismiss={() => setError("")}
@@ -459,7 +464,7 @@ const ProfileScreen = ({ navigation }) => {
       >
         {error}
       </Snackbar>
-    </View>
+    </SafeAreaView>
   );
 };
 
