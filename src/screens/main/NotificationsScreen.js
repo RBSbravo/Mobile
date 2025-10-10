@@ -289,7 +289,7 @@ const NotificationsScreen = () => {
         <ActivityIndicator style={{ marginTop: isTablet ? 48 : 32 }} />
       ) : (
         <FlatList
-          style={{ flex: 1 }}
+          style={{ flex: 1, backgroundColor: paperTheme.colors.background }}
           data={filteredNotifications}
           keyExtractor={item => item.id?.toString() || Math.random().toString()}
           renderItem={renderItem}
@@ -297,7 +297,7 @@ const NotificationsScreen = () => {
           refreshing={loading}
           onRefresh={fetchNotifications}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: isTablet ? 32 : 12, paddingBottom: isTablet ? 32 : 16 }}
+          contentContainerStyle={{ paddingHorizontal: isTablet ? 32 : 12, paddingBottom: isTablet ? 32 : 16, backgroundColor: paperTheme.colors.background, minHeight: 400 }}
         />
       )}
       </KeyboardAvoidingView>

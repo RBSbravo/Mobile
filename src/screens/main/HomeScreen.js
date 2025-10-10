@@ -129,8 +129,8 @@ const HomeScreen = ({ navigation }) => {
           subtitle={"Here's a look at your day."}
         />
         <ScrollView 
-          style={{ flex: 1 }}
-          contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16 }]}
+          style={{ flex: 1, backgroundColor: paperTheme.colors.background }}
+          contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16, backgroundColor: paperTheme.colors.background, minHeight: 400 }]}
           showsVerticalScrollIndicator={false}
           bounces={false}
         >

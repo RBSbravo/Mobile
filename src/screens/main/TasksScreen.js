@@ -266,13 +266,13 @@ const TasksScreen = ({ navigation }) => {
           styles={styles}
         />
         <FlatList
-          style={{ flex: 1 }}
+          style={{ flex: 1, backgroundColor: paperTheme.colors.background }}
           data={filteredTasks}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           contentContainerStyle={[
             styles.listContent,
-            { padding: isTablet ? 32 : 16, paddingTop: 8 }
+            { padding: isTablet ? 32 : 16, paddingTop: 8, backgroundColor: paperTheme.colors.background, minHeight: 400 }
           ]}
           ListEmptyComponent={renderEmptyComponent}
           refreshControl={

@@ -11,6 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useRealtimeUpdates } from '../../hooks/useRealtimeUpdates';
 import PasswordStrengthIndicator from '../../components/PasswordStrengthIndicator';
 import passwordValidator from '../../utils/passwordValidator';
+import ScreenHeader from '../../components/ScreenHeader';
 
 const ProfileScreen = ({ navigation }) => {
   const paperTheme = useTheme();
@@ -404,22 +405,18 @@ const ProfileScreen = ({ navigation }) => {
         </Dialog>
       </Portal>
 
-      <View style={[styles.header, styles.centeredHeader, styles.headerShadow, { borderBottomColor: paperTheme.colors.border, backgroundColor: paperTheme.colors.background }]}>
-        <Avatar.Text 
-          size={80} 
+      <ScreenHeader
+        leftIcon={<Avatar.Text 
+          size={40} 
           label={user?.firstname ? user.firstname.charAt(0) : ''} 
           style={{ backgroundColor: paperTheme.colors.primary }}
-        />
-        <View style={{ marginLeft: 20 }}>
-          <Title style={[styles.title, { color: paperTheme.colors.text }]}>
-            {user?.firstname || ''} {user?.lastname || ''}
-          </Title>
-          <Caption style={[styles.caption, { color: paperTheme.colors.textSecondary }]}>{user?.email || ''}</Caption>
-        </View>
-      </View>
+        />}
+        title={`${user?.firstname || ''} ${user?.lastname || ''}`}
+        subtitle={user?.email || ''}
+      />
       <ScrollView
-        style={{ flex: 1 }}
-        contentContainerStyle={styles.scrollContent}
+        style={{ flex: 1, backgroundColor: paperTheme.colors.background }}
+        contentContainerStyle={[styles.scrollContent, { backgroundColor: paperTheme.colors.background }]}
         showsVerticalScrollIndicator={false}
         bounces={false}
       >
@@ -470,6 +467,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     padding: theme.spacing.lg,
+    minHeight: 400,
   },
   header: {
     alignItems: 'center',

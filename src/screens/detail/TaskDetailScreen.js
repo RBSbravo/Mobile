@@ -289,7 +289,7 @@ const TaskDetailScreen = ({ route }) => {
         <ScrollView 
           style={{ flex: 1, backgroundColor: paperTheme.colors.background }}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={[styles.scrollContent, { backgroundColor: paperTheme.colors.background, minHeight: 400 }]}
         >
       <Card 
         style={[styles.card, { backgroundColor: paperTheme.colors.surface, ...(paperTheme.dark && { borderColor: paperTheme.colors.border, borderWidth: 1 }) }]}
