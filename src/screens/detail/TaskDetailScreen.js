@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, ActivityIndicator, Platform, Linking, Image, Dimensions, TouchableOpacity, SafeAreaView, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, ScrollView, ActivityIndicator, Platform, Linking, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { Text, Card, ProgressBar, Button, Chip, TextInput, Caption, Title, useTheme } from 'react-native-paper';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
@@ -284,13 +284,10 @@ const TaskDetailScreen = ({ route }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-        <ScrollView 
-          style={{ flex: 1, backgroundColor: paperTheme.colors.background }}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={[styles.scrollContent, { backgroundColor: paperTheme.colors.background, minHeight: 400 }]}
-        >
+    <ScrollView 
+      style={[styles.container, { backgroundColor: paperTheme.colors.background }]}
+      showsVerticalScrollIndicator={false}
+    >
       <Card 
         style={[styles.card, { backgroundColor: paperTheme.colors.surface, ...(paperTheme.dark && { borderColor: paperTheme.colors.border, borderWidth: 1 }) }]}
         mode="elevated"
@@ -666,19 +663,13 @@ const TaskDetailScreen = ({ route }) => {
           </View>
         </Modal>
       </Portal>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    paddingBottom: 20,
   },
   card: {
     margin: 16,

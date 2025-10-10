@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity, SafeAreaView, useWindowDimensions, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, SafeAreaView, useWindowDimensions } from 'react-native';
 import { Text, Chip, Button, ActivityIndicator, useTheme } from 'react-native-paper';
 import { theme as customTheme, styles as globalStyles } from '../../theme';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -248,24 +248,23 @@ const NotificationsScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-        <ScreenHeader
-          leftIcon={<MaterialIcons name="notifications" size={28} color={paperTheme.colors.primary} />}
-          title="Notifications"
-          rightAction={
-            <Button
-              onPress={handleMarkAllAsRead}
-              disabled={unreadCount === 0}
-              compact
-              mode="text"
-              style={{ minWidth: 0, paddingHorizontal: 0 }}
-              labelStyle={{ fontSize: 16, color: paperTheme.colors.primary }}
-              icon={() => <MaterialIcons name="done-all" size={22} color={paperTheme.colors.primary} />}
-              accessibilityLabel="Mark all as read"
-            />
-          }
-        />
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
+      <ScreenHeader
+        leftIcon={<MaterialIcons name="notifications" size={28} color={paperTheme.colors.primary} />}
+        title="Notifications"
+        rightAction={
+          <Button
+            onPress={handleMarkAllAsRead}
+            disabled={unreadCount === 0}
+            compact
+            mode="text"
+            style={{ minWidth: 0, paddingHorizontal: 0 }}
+            labelStyle={{ fontSize: 16, color: paperTheme.colors.primary }}
+            icon={() => <MaterialIcons name="done-all" size={22} color={paperTheme.colors.primary} />}
+            accessibilityLabel="Mark all as read"
+          />
+        }
+      />
       <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: isTablet ? 16 : 8 }}>
         {TABS.map(t => {
           let count = 0;
@@ -289,7 +288,6 @@ const NotificationsScreen = () => {
         <ActivityIndicator style={{ marginTop: isTablet ? 48 : 32 }} />
       ) : (
         <FlatList
-          style={{ flex: 1, backgroundColor: paperTheme.colors.background }}
           data={filteredNotifications}
           keyExtractor={item => item.id?.toString() || Math.random().toString()}
           renderItem={renderItem}
@@ -297,10 +295,9 @@ const NotificationsScreen = () => {
           refreshing={loading}
           onRefresh={fetchNotifications}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: isTablet ? 32 : 12, paddingBottom: isTablet ? 32 : 16, backgroundColor: paperTheme.colors.background, minHeight: 400 }}
+          contentContainerStyle={{ paddingHorizontal: isTablet ? 32 : 12, paddingBottom: isTablet ? 32 : 16 }}
         />
       )}
-      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

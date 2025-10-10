@@ -224,17 +224,17 @@ const TasksScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
+      <ScreenHeader
+        leftIcon={<MaterialIcons name="assignment" size={28} color={paperTheme.colors.primary} />}
+        title="My Tasks"
+        subtitle="Manage your tasks here"
+      />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={RNPlatform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={RNPlatform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={80}
       >
-        <ScreenHeader
-          leftIcon={<MaterialIcons name="assignment" size={28} color={paperTheme.colors.primary} />}
-          title="My Tasks"
-          subtitle="Manage your tasks here"
-        />
         <Button
           mode="outlined"
           icon="plus"
@@ -266,13 +266,12 @@ const TasksScreen = ({ navigation }) => {
           styles={styles}
         />
         <FlatList
-          style={{ flex: 1, backgroundColor: paperTheme.colors.background }}
           data={filteredTasks}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           contentContainerStyle={[
             styles.listContent,
-            { padding: isTablet ? 32 : 16, paddingTop: 8, backgroundColor: paperTheme.colors.background, minHeight: 400 }
+            { padding: isTablet ? 32 : 16, paddingTop: 8 }
           ]}
           ListEmptyComponent={renderEmptyComponent}
           refreshControl={
@@ -411,7 +410,6 @@ const styles = StyleSheet.create({
   listContent: {
     padding: 16,
     paddingBottom: 80,
-    minHeight: '100%',
   },
   title: {
     fontSize: 16,

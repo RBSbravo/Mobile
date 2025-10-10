@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text, Card, Button, Avatar, useTheme, Dialog, Portal, ActivityIndicator, Title, Caption, TouchableRipple, Switch, Snackbar, TextInput, HelperText } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme, styles as globalStyles } from '../../theme';
@@ -11,7 +11,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useRealtimeUpdates } from '../../hooks/useRealtimeUpdates';
 import PasswordStrengthIndicator from '../../components/PasswordStrengthIndicator';
 import passwordValidator from '../../utils/passwordValidator';
-import ScreenHeader from '../../components/ScreenHeader';
 
 const ProfileScreen = ({ navigation }) => {
   const paperTheme = useTheme();
@@ -219,9 +218,8 @@ const ProfileScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-        <Portal>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
+      <Portal>
         <Dialog 
           visible={logoutDialogVisible} 
           onDismiss={() => setLogoutDialogVisible(false)}
@@ -405,18 +403,21 @@ const ProfileScreen = ({ navigation }) => {
         </Dialog>
       </Portal>
 
-      <ScreenHeader
-        leftIcon={<Avatar.Text 
-          size={40} 
+      <View style={[styles.header, styles.centeredHeader, styles.headerShadow, { borderBottomColor: paperTheme.colors.border, backgroundColor: paperTheme.colors.background }]}>
+        <Avatar.Text 
+          size={80} 
           label={user?.firstname ? user.firstname.charAt(0) : ''} 
           style={{ backgroundColor: paperTheme.colors.primary }}
-        />}
-        title={`${user?.firstname || ''} ${user?.lastname || ''}`}
-        subtitle={user?.email || ''}
-      />
+        />
+        <View style={{ marginLeft: 20 }}>
+          <Title style={[styles.title, { color: paperTheme.colors.text }]}>
+            {user?.firstname || ''} {user?.lastname || ''}
+          </Title>
+          <Caption style={[styles.caption, { color: paperTheme.colors.textSecondary }]}>{user?.email || ''}</Caption>
+        </View>
+      </View>
       <ScrollView
-        style={{ flex: 1, backgroundColor: paperTheme.colors.background }}
-        contentContainerStyle={[styles.scrollContent, { backgroundColor: paperTheme.colors.background }]}
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         bounces={false}
       >
@@ -458,7 +459,6 @@ const ProfileScreen = ({ navigation }) => {
       >
         {error}
       </Snackbar>
-      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -467,7 +467,6 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     padding: theme.spacing.lg,
-    minHeight: 400,
   },
   header: {
     alignItems: 'center',
