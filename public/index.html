@@ -3,20 +3,42 @@
 <head>
   <meta charset="utf-8" />
   <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
+  
+  <!-- Primary Meta Tags -->
+  <title>MITO Task Manager - Professional Task Management System</title>
+  <meta name="title" content="MITO Task Manager - Professional Task Management System" />
+  <meta name="description" content="Manage your tasks, tickets, and projects efficiently with MITO Task Management System. Professional-grade productivity tool for teams." />
+  <meta name="keywords" content="task management, project management, productivity, team collaboration, tickets, MITO" />
+  <meta name="author" content="MITO Team" />
+  <meta name="robots" content="index, follow" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mito-task-manager.vercel.app/" />
+  <meta property="og:title" content="MITO Task Manager - Professional Task Management System" />
+  <meta property="og:description" content="Manage your tasks, tickets, and projects efficiently with MITO Task Management System." />
+  <meta property="og:image" content="/icon-512.png" />
+  <meta property="og:site_name" content="MITO Task Manager" />
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://mito-task-manager.vercel.app/" />
+  <meta property="twitter:title" content="MITO Task Manager - Professional Task Management System" />
+  <meta property="twitter:description" content="Manage your tasks, tickets, and projects efficiently with MITO Task Management System." />
+  <meta property="twitter:image" content="/icon-512.png" />
   
   <!-- PWA Meta Tags -->
   <meta name="application-name" content="MITO Task Manager" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="MITO Task Manager" />
-  <meta name="description" content="MITO Task Management System - Manage your tasks, tickets, and projects efficiently" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="msapplication-config" content="/browserconfig.xml" />
-  <meta name="msapplication-TileColor" content="#2B5797" />
+  <meta name="msapplication-TileColor" content="#2E7D32" />
   <meta name="msapplication-tap-highlight" content="no" />
-  <meta name="theme-color" content="#000000" />
+  <meta name="theme-color" content="#2E7D32" />
   
   <!-- PWA Manifest -->
   <link rel="manifest" href="/manifest.json" />
@@ -32,25 +54,32 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
   <link rel="shortcut icon" href="/favicon.ico" />
   
+  <!-- Preload critical resources -->
+  <link rel="preload" href="/mito_logo.png" as="image" />
+  <link rel="preload" href="/icon-192.png" as="image" />
+  
+  <!-- DNS Prefetch for external resources -->
+  <link rel="dns-prefetch" href="//backend-ticketing-system.up.railway.app" />
+  
   <!-- Splash Screen -->
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   
-  <title>MITO Task Manager</title>
-  
+  <!-- Critical CSS -->
   <style>
-    /* Loading screen styles */
+    /* Critical loading screen styles */
     #loading-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 9999;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
     
     .loading-logo {
@@ -58,6 +87,7 @@
       height: 80px;
       margin-bottom: 20px;
       animation: pulse 2s infinite;
+      border-radius: 50%;
     }
     
     .loading-text {
@@ -65,6 +95,7 @@
       font-size: 18px;
       font-weight: 500;
       margin-bottom: 10px;
+      text-align: center;
     }
     
     .loading-spinner {
@@ -74,6 +105,22 @@
       border-top: 4px solid white;
       border-radius: 50%;
       animation: spin 1s linear infinite;
+    }
+    
+    .loading-progress {
+      width: 200px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 2px;
+      margin-top: 20px;
+      overflow: hidden;
+    }
+    
+    .loading-progress-bar {
+      height: 100%;
+      background: white;
+      border-radius: 2px;
+      animation: progress 3s ease-in-out infinite;
     }
     
     @keyframes spin {
@@ -87,32 +134,124 @@
       100% { transform: scale(1); }
     }
     
+    @keyframes progress {
+      0% { width: 0%; }
+      50% { width: 70%; }
+      100% { width: 100%; }
+    }
+    
     /* Hide loading screen when app loads */
     .app-loaded #loading-screen {
-      display: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    }
+    
+    /* Prevent flash of unstyled content */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #F5F5F5;
+    }
+    
+    /* Accessibility improvements */
+    @media (prefers-reduced-motion: reduce) {
+      .loading-logo,
+      .loading-spinner,
+      .loading-progress-bar {
+        animation: none;
+      }
+    }
+    
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+      #loading-screen {
+        background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+      }
     }
   </style>
 </head>
 <body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <noscript>
+    <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+      <h1>JavaScript Required</h1>
+      <p>You need to enable JavaScript to run this app.</p>
+      <p>Please enable JavaScript in your browser settings and refresh the page.</p>
+    </div>
+  </noscript>
   
   <!-- Loading Screen -->
   <div id="loading-screen">
     <img src="/mito_logo.png" alt="MITO Logo" class="loading-logo" />
     <div class="loading-text">MITO Task Manager</div>
     <div class="loading-spinner"></div>
+    <div class="loading-progress">
+      <div class="loading-progress-bar"></div>
+    </div>
   </div>
   
   <!-- App Root -->
   <div id="root"></div>
   
+  <!-- Service Worker Registration -->
   <script>
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('SW registered: ', registration);
+            
+            // Check for updates
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // New content is available, show update notification
+                  if (confirm('New version available! Reload to update?')) {
+                    window.location.reload();
+                  }
+                }
+              });
+            });
+          })
+          .catch((registrationError) => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+    
     // Hide loading screen when app is loaded
     window.addEventListener('load', function() {
       setTimeout(function() {
         document.body.classList.add('app-loaded');
       }, 1000);
     });
+    
+    // Handle online/offline status
+    window.addEventListener('online', () => {
+      console.log('App is online');
+      // Trigger sync if needed
+      if ('serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
+        navigator.serviceWorker.ready.then(registration => {
+          registration.sync.register('background-sync');
+        });
+      }
+    });
+    
+    window.addEventListener('offline', () => {
+      console.log('App is offline');
+    });
+    
+    // Performance monitoring
+    if ('performance' in window) {
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const perfData = performance.getEntriesByType('navigation')[0];
+          console.log('Page load time:', perfData.loadEventEnd - perfData.loadEventStart, 'ms');
+        }, 0);
+      });
+    }
   </script>
 </body>
 </html>

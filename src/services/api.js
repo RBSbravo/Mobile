@@ -19,7 +19,53 @@ const getAuthHeaders = (token) => ({
   ...(token && { 'Authorization': `Bearer ${token}` })
 });
 
-// Helper function to make API requests with timeout and retry
+// Offline storage for pending actions
+const OFFLINE_STORAGE_KEY = 'mito_offline_actions';
+
+// Helper function to store offline actions
+const storeOfflineAction = async (action) => {
+  try {
+    const existingActions = await getOfflineActions();
+    const newAction = {
+      ...action,
+      id: Date.now() + Math.random(),
+      timestamp: new Date().toISOString(),
+      retryCount: 0
+    };
+    existingActions.push(newAction);
+    localStorage.setItem(OFFLINE_STORAGE_KEY, JSON.stringify(existingActions));
+    return newAction;
+  } catch (error) {
+    console.error('Failed to store offline action:', error);
+  }
+};
+
+// Helper function to get offline actions
+const getOfflineActions = async () => {
+  try {
+    const actions = localStorage.getItem(OFFLINE_STORAGE_KEY);
+    return actions ? JSON.parse(actions) : [];
+  } catch (error) {
+    console.error('Failed to get offline actions:', error);
+    return [];
+  }
+};
+
+// Helper function to remove offline action
+const removeOfflineAction = async (actionId) => {
+  try {
+    const actions = await getOfflineActions();
+    const filteredActions = actions.filter(action => action.id !== actionId);
+    localStorage.setItem(OFFLINE_STORAGE_KEY, JSON.stringify(filteredActions));
+  } catch (error) {
+    console.error('Failed to remove offline action:', error);
+  }
+};
+
+// Helper function to check if device is online
+const isOnline = () => navigator.onLine;
+
+// Helper function to make API requests with timeout, retry, and offline support
 const makeApiRequest = async (url, options, retryCount = 0) => {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), config.TIMEOUT);
@@ -36,6 +82,20 @@ const makeApiRequest = async (url, options, retryCount = 0) => {
     
     if (error.name === 'AbortError') {
       throw new Error(config.ERROR_MESSAGES.TIMEOUT_ERROR);
+    }
+    
+    // If offline and it's a POST/PUT/DELETE request, store for later sync
+    if (!isOnline() && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(options.method)) {
+      const offlineAction = {
+        url,
+        options: {
+          ...options,
+          body: options.body
+        },
+        method: options.method
+      };
+      await storeOfflineAction(offlineAction);
+      throw new Error('Action queued for offline sync');
     }
     
     if (retryCount < config.RETRY_ATTEMPTS) {
@@ -352,6 +412,46 @@ const api = {
       throw error;
     }
   },
+
+  // --- Offline Sync ---
+  syncOfflineActions: async (token) => {
+    try {
+      const offlineActions = await getOfflineActions();
+      const syncedActions = [];
+      
+      for (const action of offlineActions) {
+        try {
+          const response = await makeApiRequest(action.url, {
+            ...action.options,
+            headers: {
+              ...action.options.headers,
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          
+          if (response.ok) {
+            await removeOfflineAction(action.id);
+            syncedActions.push(action);
+          }
+        } catch (error) {
+          console.error('Failed to sync action:', action, error);
+          // Increment retry count
+          action.retryCount = (action.retryCount || 0) + 1;
+          if (action.retryCount > 3) {
+            await removeOfflineAction(action.id);
+          }
+        }
+      }
+      
+      return syncedActions;
+    } catch (error) {
+      console.error('Offline sync failed:', error);
+      throw error;
+    }
+  },
+
+  getOfflineActions: getOfflineActions,
+  isOnline: isOnline,
 };
 
 export default api; 
