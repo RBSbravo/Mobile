@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, useWindowDimensions } from 'react-native';
+import { View, StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, useWindowDimensions, Platform } from 'react-native';
 import { Text, Card, useTheme, Snackbar } from 'react-native-paper';
 import { theme as customTheme, styles as globalStyles } from '../../theme';
 import { useAuth } from '../../context/AuthContext';
@@ -127,11 +127,15 @@ const HomeScreen = ({ navigation }) => {
         title={`Welcome, ${user?.firstname || 'User'}!`}
         subtitle={"Here's a look at your day."}
       />
-      <ScrollView 
-        contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16 }]}
-        showsVerticalScrollIndicator={false}
-        bounces={false}
-      >
+      <View style={{ 
+        flex: 1, 
+        ...(Platform.OS === 'web' && { minHeight: '100vh' })
+      }}>
+        <ScrollView 
+          contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16 }]}
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+        >
         <View style={{ marginVertical: customTheme.spacing.lg, backgroundColor: paperTheme.colors.border, height: 1, width: '100%' }} />
         <View style={{
           backgroundColor: paperTheme.colors.primaryContainer,
@@ -172,7 +176,8 @@ const HomeScreen = ({ navigation }) => {
             </Card>
           )}
         </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
       <Snackbar
         visible={!!error}
         onDismiss={() => setError("")}

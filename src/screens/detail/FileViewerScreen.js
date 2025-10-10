@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ActivityIndicator, StyleSheet, Text, Image, Modal } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, Text, Image, Modal, Platform } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { WebView } from 'react-native-webview';
 import * as Sharing from 'expo-sharing';
@@ -54,7 +54,11 @@ const FileViewerScreen = ({ route }) => {
   if (isImage) {
     // Use react-native-image-zoom-viewer for pinch-to-zoom and pan directly in the screen
     return (
-      <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+      <View style={{ 
+        flex: 1, 
+        backgroundColor: theme.colors.background,
+        ...(Platform.OS === 'web' && { minHeight: '100vh' })
+      }}>
         <ImageViewer
           imageUrls={[{ url: fileUrl }]}
           enableSwipeDown={false}
@@ -68,18 +72,23 @@ const FileViewerScreen = ({ route }) => {
 
   // For non-image remote files, fallback to WebView
   return (
-    <WebView
-      source={{
-        uri: fileUrl,
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined
-      }}
-      style={{ flex: 1 }}
-      onError={syntheticEvent => {
-        const { nativeEvent } = syntheticEvent;
-        setError('Failed to load file: ' + (nativeEvent?.description || 'Unknown error'));
-      }}
-      startInLoadingState
-    />
+    <View style={{ 
+      flex: 1,
+      ...(Platform.OS === 'web' && { minHeight: '100vh' })
+    }}>
+      <WebView
+        source={{
+          uri: fileUrl,
+          headers: token ? { Authorization: `Bearer ${token}` } : undefined
+        }}
+        style={{ flex: 1 }}
+        onError={syntheticEvent => {
+          const { nativeEvent } = syntheticEvent;
+          setError('Failed to load file: ' + (nativeEvent?.description || 'Unknown error'));
+        }}
+        startInLoadingState
+      />
+    </View>
   );
 };
 

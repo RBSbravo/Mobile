@@ -230,11 +230,15 @@ const TasksScreen = ({ navigation }) => {
         title="My Tasks"
         subtitle="Manage your tasks here"
       />
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={RNPlatform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={80}
-      >
+      <View style={{ 
+        flex: 1, 
+        ...(RNPlatform.OS === 'web' && { minHeight: '100vh' })
+      }}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={RNPlatform.OS === 'ios' ? 'padding' : undefined}
+          keyboardVerticalOffset={80}
+        >
         <Button
           mode="outlined"
           icon="plus"
@@ -344,7 +348,8 @@ const TasksScreen = ({ navigation }) => {
         >
           {error}
         </Snackbar>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </View>
     </SafeAreaView>
   );
 };
