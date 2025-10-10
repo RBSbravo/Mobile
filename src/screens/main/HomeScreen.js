@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, useWindowDimensions, Platform, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, useWindowDimensions } from 'react-native';
 import { Text, Card, useTheme, Snackbar } from 'react-native-paper';
 import { theme as customTheme, styles as globalStyles } from '../../theme';
 import { useAuth } from '../../context/AuthContext';
@@ -121,32 +121,17 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <View style={{ 
-      flex: 1, 
-      backgroundColor: paperTheme.colors.background,
-      ...(Platform.OS === 'web' && { height: '100vh' })
-    }}>
-      {/* Test with absolute positioning */}
-      <View style={{ 
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'yellow',
-        padding: 20
-      }}>
-        <Text style={{ fontSize: 24, color: 'black' }}>ABSOLUTE POSITION TEST</Text>
-        <Text style={{ fontSize: 18, color: 'black' }}>User: {user?.firstname || 'No user'}</Text>
-        <Text style={{ fontSize: 18, color: 'black' }}>Tasks: {tasks.length}</Text>
-        <Text style={{ fontSize: 18, color: 'black' }}>Platform: {Platform.OS}</Text>
-      </View>
-        {/* Test content */}
-        <View style={{ backgroundColor: 'blue', padding: 20, margin: 10 }}>
-          <Text style={{ color: 'white', fontSize: 18 }}>TEST: ScrollView content is rendering!</Text>
-          <Text style={{ color: 'white' }}>User: {user?.firstname || 'No user'}</Text>
-          <Text style={{ color: 'white' }}>Tasks: {tasks.length}</Text>
-        </View>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
+      <ScreenHeader
+        leftIcon={<View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: paperTheme.colors.primary, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>{user?.firstname ? user.firstname.charAt(0).toUpperCase() : 'U'}</Text></View>}
+        title={`Welcome, ${user?.firstname || 'User'}!`}
+        subtitle={"Here's a look at your day."}
+      />
+      <ScrollView 
+        contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16 }]}
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+      >
         <View style={{ marginVertical: customTheme.spacing.lg, backgroundColor: paperTheme.colors.border, height: 1, width: '100%' }} />
         <View style={{
           backgroundColor: paperTheme.colors.primaryContainer,
@@ -187,7 +172,7 @@ const HomeScreen = ({ navigation }) => {
             </Card>
           )}
         </View>
-      </View>
+      </ScrollView>
       <Snackbar
         visible={!!error}
         onDismiss={() => setError("")}
@@ -196,13 +181,13 @@ const HomeScreen = ({ navigation }) => {
       >
         {error}
       </Snackbar>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   scrollContent: {
-    flex: 1,
+    flexGrow: 1,
     padding: customTheme.spacing.lg,
   },
   statsGrid: {

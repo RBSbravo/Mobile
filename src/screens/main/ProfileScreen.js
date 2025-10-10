@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, ScrollView, Platform } from 'react-native';
 import { Text, Card, Button, Avatar, useTheme, Dialog, Portal, ActivityIndicator, Title, Caption, TouchableRipple, Switch, Snackbar, TextInput, HelperText } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme, styles as globalStyles } from '../../theme';
@@ -218,8 +218,7 @@ const ProfileScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
       <Portal>
         <Dialog 
           visible={logoutDialogVisible} 
@@ -417,13 +416,13 @@ const ProfileScreen = ({ navigation }) => {
           <Caption style={[styles.caption, { color: paperTheme.colors.textSecondary }]}>{user?.email || ''}</Caption>
         </View>
       </View>
-      <ScrollView 
-        style={{ flex: 1 }}
-        contentContainerStyle={{ 
-          padding: 16,
-          ...(Platform.OS === 'web' && { minHeight: 'calc(100vh - 120px)' })
-        }}
+      <ScrollView
+        contentContainerStyle={[
+          styles.scrollContent,
+          Platform.OS === 'web' && { minHeight: 'calc(100vh - 80px)' }
+        ]}
         showsVerticalScrollIndicator={false}
+        bounces={false}
       >
         <View style={styles.section}>
           <Card style={[styles.infoCard, { backgroundColor: paperTheme.colors.surface, ...(paperTheme.dark && { borderColor: paperTheme.colors.border, borderWidth: 1 }) }]}>
@@ -455,7 +454,6 @@ const ProfileScreen = ({ navigation }) => {
           </TouchableRipple>
         </View>
       </ScrollView>
-      </KeyboardAvoidingView>
       <Snackbar
         visible={!!error}
         onDismiss={() => setError("")}

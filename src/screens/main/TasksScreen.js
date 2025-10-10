@@ -224,14 +224,17 @@ const TasksScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
       <ScreenHeader
         leftIcon={<MaterialIcons name="assignment" size={28} color={paperTheme.colors.primary} />}
         title="My Tasks"
         subtitle="Manage your tasks here"
       />
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        style={{ 
+          flex: 1,
+          ...(RNPlatform.OS === 'web' && { minHeight: 'calc(100vh - 80px)' })
+        }}
         behavior={RNPlatform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={80}
       >
@@ -269,11 +272,9 @@ const TasksScreen = ({ navigation }) => {
           data={filteredTasks}
           renderItem={renderItem}
           keyExtractor={item => item.id}
-          style={{ flex: 1 }}
           contentContainerStyle={[
             styles.listContent,
-            { padding: isTablet ? 32 : 16, paddingTop: 8 },
-            Platform.OS === 'web' && { minHeight: 'calc(100vh - 120px)' }
+            { padding: isTablet ? 32 : 16, paddingTop: 8 }
           ]}
           ListEmptyComponent={renderEmptyComponent}
           refreshControl={

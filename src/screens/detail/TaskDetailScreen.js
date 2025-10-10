@@ -284,8 +284,13 @@ const TaskDetailScreen = ({ route }) => {
   }
 
   return (
-    <View 
-      style={[styles.container, { backgroundColor: paperTheme.colors.background }]}
+    <ScrollView 
+      style={[
+        styles.container, 
+        { backgroundColor: paperTheme.colors.background },
+        Platform.OS === 'web' && { minHeight: '100vh' }
+      ]}
+      showsVerticalScrollIndicator={false}
     >
       <Card 
         style={[styles.card, { backgroundColor: paperTheme.colors.surface, ...(paperTheme.dark && { borderColor: paperTheme.colors.border, borderWidth: 1 }) }]}
@@ -662,7 +667,7 @@ const TaskDetailScreen = ({ route }) => {
           </View>
         </Modal>
       </Portal>
-    </View>
+    </ScrollView>
   );
 };
 
