@@ -1,7 +1,7 @@
 {
   "short_name": "MITO Task Manager",
   "name": "MITO Task Management System",
-  "description": "A comprehensive task and ticket management system for teams",
+  "description": "Manage your tasks, tickets, and projects efficiently with MITO Task Management System",
   "icons": [
     {
       "src": "/icon-192.png",
@@ -29,14 +29,14 @@
       "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "form_factor": "wide"
+      "form_factor": "narrow"
     }
   ],
   "shortcuts": [
     {
       "name": "Dashboard",
       "short_name": "Dashboard",
-      "description": "View your task dashboard",
+      "description": "View your dashboard",
       "url": "/dashboard",
       "icons": [
         {
@@ -56,6 +56,20 @@
           "sizes": "192x192"
         }
       ]
+    },
+    {
+      "name": "Tickets",
+      "short_name": "Tickets",
+      "description": "View support tickets",
+      "url": "/tickets",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
-  ]
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
 }

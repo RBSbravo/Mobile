@@ -1,14 +1,13 @@
 {
   "expo": {
-    "scheme": "mito",
     "name": "MITO Task Manager",
     "slug": "mito-task-manager",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/mito_logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/mito_logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#667eea"
     },
@@ -24,26 +23,16 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/mito_logo.png",
         "backgroundColor": "#667eea"
       },
       "package": "com.bravorb.mitomobileapp"
     },
     "web": {
-      "favicon": "./assets/favicon.png",
-      "bundler": "metro",
-      "name": "MITO Task Manager",
-      "shortName": "MITO",
-      "description": "A comprehensive task and ticket management system for teams",
-      "startUrl": "/",
-      "display": "standalone",
-      "orientation": "portrait",
-      "themeColor": "#667eea",
-      "backgroundColor": "#ffffff",
-      "lang": "en",
-      "scope": "/",
-      "categories": ["productivity", "business", "utilities"]
+      "favicon": "./assets/mito_logo.png",
+      "bundler": "metro"
     },
+    "scheme": "mito",
     "extra": {
       "eas": {
         "projectId": "20d4180e-0dae-4b52-ab09-4a8b949938ff"

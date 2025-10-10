@@ -26,13 +26,18 @@ const API_CONFIG = {
 // Get current environment
 const getEnvironment = () => {
   // Check for production environment
-  if (typeof window !== 'undefined' && window.location && window.location.hostname !== 'localhost') {
-    return 'production';
+  if (typeof window !== 'undefined' && window.location) {
+    const hostname = window.location.hostname;
+    if (hostname.includes('vercel.app') || hostname.includes('railway.app') || hostname === 'localhost') {
+      return 'production';
+    }
   }
-  // You can set this via environment variables or build configuration
+  
+  // Check for development environment
   if (__DEV__) {
     return 'development';
   }
+  
   // Default to production for web builds
   return 'production';
 };
