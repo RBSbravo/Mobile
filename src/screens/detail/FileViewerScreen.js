@@ -54,11 +54,7 @@ const FileViewerScreen = ({ route }) => {
   if (isImage) {
     // Use react-native-image-zoom-viewer for pinch-to-zoom and pan directly in the screen
     return (
-      <View style={{ 
-        flex: 1, 
-        backgroundColor: theme.colors.background,
-        ...(Platform.OS === 'web' && { minHeight: '100vh' })
-      }}>
+      <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
         <ImageViewer
           imageUrls={[{ url: fileUrl }]}
           enableSwipeDown={false}
@@ -72,10 +68,7 @@ const FileViewerScreen = ({ route }) => {
 
   // For non-image remote files, fallback to WebView
   return (
-    <View style={{ 
-      flex: 1,
-      ...(Platform.OS === 'web' && { minHeight: '100vh' })
-    }}>
+    <View style={{ flex: 1 }}>
       <WebView
         source={{
           uri: fileUrl,

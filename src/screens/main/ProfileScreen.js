@@ -218,12 +218,8 @@ const ProfileScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
-      <View style={{ 
-        flex: 1, 
-        ...(Platform.OS === 'web' && { minHeight: '100vh' })
-      }}>
-        <Portal>
+    <View style={{ flex: 1, backgroundColor: paperTheme.colors.background }}>
+      <Portal>
         <Dialog 
           visible={logoutDialogVisible} 
           onDismiss={() => setLogoutDialogVisible(false)}
@@ -463,8 +459,7 @@ const ProfileScreen = ({ navigation }) => {
       >
         {error}
       </Snackbar>
-      </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

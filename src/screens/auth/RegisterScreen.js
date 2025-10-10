@@ -148,7 +148,7 @@ const RegisterScreen = ({ navigation }) => {
   const filteredDepartments = departments.filter(d => d.name.toLowerCase().includes(departmentSearch.toLowerCase()));
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right', 'bottom']}>
+    <View style={{ flex: 1, backgroundColor: paperTheme.colors.background }}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
         <View style={{ justifyContent: 'center', alignItems: 'center', padding: 16, flexGrow: 1 }}>
           <View style={{
@@ -358,7 +358,7 @@ const RegisterScreen = ({ navigation }) => {
           )}
         </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 

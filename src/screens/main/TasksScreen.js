@@ -224,21 +224,17 @@ const TasksScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
+    <View style={{ flex: 1, backgroundColor: paperTheme.colors.background }}>
       <ScreenHeader
         leftIcon={<MaterialIcons name="assignment" size={28} color={paperTheme.colors.primary} />}
         title="My Tasks"
         subtitle="Manage your tasks here"
       />
-      <View style={{ 
-        flex: 1, 
-        ...(RNPlatform.OS === 'web' && { minHeight: '100vh' })
-      }}>
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={RNPlatform.OS === 'ios' ? 'padding' : undefined}
-          keyboardVerticalOffset={80}
-        >
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={RNPlatform.OS === 'ios' ? 'padding' : undefined}
+        keyboardVerticalOffset={80}
+      >
         <Button
           mode="outlined"
           icon="plus"
@@ -348,9 +344,8 @@ const TasksScreen = ({ navigation }) => {
         >
           {error}
         </Snackbar>
-        </KeyboardAvoidingView>
-      </View>
-    </SafeAreaView>
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 
