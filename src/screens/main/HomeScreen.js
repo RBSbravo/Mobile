@@ -123,11 +123,10 @@ const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-        <ScreenHeader
-          leftIcon={<View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: paperTheme.colors.primary, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>{user?.firstname ? user.firstname.charAt(0).toUpperCase() : 'U'}</Text></View>}
-          title={`Welcome, ${user?.firstname || 'User'}!`}
-          subtitle={"Here's a look at your day."}
-        />
+        {/* Temporarily removed ScreenHeader to test */}
+        <View style={{ backgroundColor: 'red', padding: 20, margin: 10 }}>
+          <Text style={{ color: 'white', fontSize: 18 }}>TEST: Header removed - content should be visible now</Text>
+        </View>
         <ScrollView 
           style={{ flex: 1 }}
           contentContainerStyle={{ 
@@ -136,6 +135,12 @@ const HomeScreen = ({ navigation }) => {
           }}
           showsVerticalScrollIndicator={false}
         >
+        {/* Test content */}
+        <View style={{ backgroundColor: 'blue', padding: 20, margin: 10 }}>
+          <Text style={{ color: 'white', fontSize: 18 }}>TEST: ScrollView content is rendering!</Text>
+          <Text style={{ color: 'white' }}>User: {user?.firstname || 'No user'}</Text>
+          <Text style={{ color: 'white' }}>Tasks: {tasks.length}</Text>
+        </View>
         <View style={{ marginVertical: customTheme.spacing.lg, backgroundColor: paperTheme.colors.border, height: 1, width: '100%' }} />
         <View style={{
           backgroundColor: paperTheme.colors.primaryContainer,
