@@ -12,7 +12,7 @@ const FullScreenLoader = ({ visible, message = 'Loading...' }) => {
 
   return (
     <View style={styles.overlay}>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
         <View style={styles.content}>
           <ActivityIndicator 
             size="large" 
