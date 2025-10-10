@@ -38,24 +38,7 @@ const linking = {
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   const { theme } = useThemeContext();
   return (
-    <View style={[
-      styles.tabBarContainer, 
-      { 
-        backgroundColor: theme.colors.surface, 
-        borderTopColor: theme.colors.border,
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 1000,
-        ...(Platform.OS === 'web' && {
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-        })
-      }
-    ]}>
+    <View style={[styles.tabBarContainer, { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border }]}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;
@@ -235,30 +218,11 @@ const MainTabs = () => {
 
   return (
     <Tab.Navigator
+      tabBar={props => <CustomTabBar {...props} />}
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: theme.colors.surface,
-          borderTopColor: theme.colors.border,
-          borderTopWidth: 1,
-          height: Platform.OS === 'ios' ? 90 : 70,
-          paddingBottom: Platform.OS === 'ios' ? 20 : 10,
-          paddingTop: 10,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: -2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 4,
-          elevation: 8,
-        },
-        tabBarActiveTintColor: theme.colors.primary,
-        tabBarInactiveTintColor: theme.colors.textSecondary,
-        tabBarLabelStyle: {
-          fontSize: 10,
-          fontFamily: theme.typography.fontFamily.medium,
-          marginTop: 4,
-        },
-        tabBarIconStyle: {
-          marginTop: 4,
+          display: 'none',
         },
       }}
     >
@@ -288,7 +252,7 @@ const MainTabs = () => {
         options={{
           tabBarLabel: 'Notifications',
           tabBarIcon: ({ color, size }) => (
-            <View style={{ position: 'relative' }}>
+            <View>
               <MaterialIcons name="notifications" size={size} color={color} />
               {unreadCount > 0 && (
                 <View style={{
@@ -357,11 +321,6 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? 90 : 70,
     backgroundColor: 'white', // Will be overridden by theme
     borderTopWidth: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 8,
   },
   tabItem: {
     flex: 1,
