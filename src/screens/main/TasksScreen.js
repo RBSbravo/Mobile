@@ -224,17 +224,17 @@ const TasksScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: paperTheme.colors.background }}>
-      <ScreenHeader
-        leftIcon={<MaterialIcons name="assignment" size={28} color={paperTheme.colors.primary} />}
-        title="My Tasks"
-        subtitle="Manage your tasks here"
-      />
+    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={RNPlatform.OS === 'ios' ? 'padding' : undefined}
+        behavior={RNPlatform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={80}
       >
+        <ScreenHeader
+          leftIcon={<MaterialIcons name="assignment" size={28} color={paperTheme.colors.primary} />}
+          title="My Tasks"
+          subtitle="Manage your tasks here"
+        />
         <Button
           mode="outlined"
           icon="plus"
@@ -345,7 +345,7 @@ const TasksScreen = ({ navigation }) => {
           {error}
         </Snackbar>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -410,6 +410,7 @@ const styles = StyleSheet.create({
   listContent: {
     padding: 16,
     paddingBottom: 80,
+    minHeight: '100%',
   },
   title: {
     fontSize: 16,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, Platform } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Text, Card, Button, Avatar, useTheme, Dialog, Portal, ActivityIndicator, Title, Caption, TouchableRipple, Switch, Snackbar, TextInput, HelperText } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme, styles as globalStyles } from '../../theme';
@@ -218,8 +218,9 @@ const ProfileScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: paperTheme.colors.background }}>
-      <Portal>
+    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+        <Portal>
         <Dialog 
           visible={logoutDialogVisible} 
           onDismiss={() => setLogoutDialogVisible(false)}
@@ -459,7 +460,8 @@ const ProfileScreen = ({ navigation }) => {
       >
         {error}
       </Snackbar>
-    </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
@@ -467,6 +469,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     padding: theme.spacing.lg,
+    minHeight: '100%',
   },
   header: {
     alignItems: 'center',

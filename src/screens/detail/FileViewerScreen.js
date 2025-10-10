@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ActivityIndicator, StyleSheet, Text, Image, Modal, Platform } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, Text, Image, Modal } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { WebView } from 'react-native-webview';
 import * as Sharing from 'expo-sharing';
@@ -68,20 +68,18 @@ const FileViewerScreen = ({ route }) => {
 
   // For non-image remote files, fallback to WebView
   return (
-    <View style={{ flex: 1 }}>
-      <WebView
-        source={{
-          uri: fileUrl,
-          headers: token ? { Authorization: `Bearer ${token}` } : undefined
-        }}
-        style={{ flex: 1 }}
-        onError={syntheticEvent => {
-          const { nativeEvent } = syntheticEvent;
-          setError('Failed to load file: ' + (nativeEvent?.description || 'Unknown error'));
-        }}
-        startInLoadingState
-      />
-    </View>
+    <WebView
+      source={{
+        uri: fileUrl,
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined
+      }}
+      style={{ flex: 1 }}
+      onError={syntheticEvent => {
+        const { nativeEvent } = syntheticEvent;
+        setError('Failed to load file: ' + (nativeEvent?.description || 'Unknown error'));
+      }}
+      startInLoadingState
+    />
   );
 };
 
