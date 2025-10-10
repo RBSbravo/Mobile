@@ -121,20 +121,26 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-        {/* Temporarily removed ScreenHeader to test */}
-        <View style={{ backgroundColor: 'red', padding: 20, margin: 10 }}>
-          <Text style={{ color: 'white', fontSize: 18 }}>TEST: Header removed - content should be visible now</Text>
-        </View>
-        <ScrollView 
-          style={{ flex: 1 }}
-          contentContainerStyle={{ 
-            padding: isTablet ? 32 : 16,
-            ...(Platform.OS === 'web' && { minHeight: 'calc(100vh - 120px)' })
-          }}
-          showsVerticalScrollIndicator={false}
-        >
+    <View style={{ 
+      flex: 1, 
+      backgroundColor: paperTheme.colors.background,
+      ...(Platform.OS === 'web' && { height: '100vh' })
+    }}>
+      {/* Test with absolute positioning */}
+      <View style={{ 
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'yellow',
+        padding: 20
+      }}>
+        <Text style={{ fontSize: 24, color: 'black' }}>ABSOLUTE POSITION TEST</Text>
+        <Text style={{ fontSize: 18, color: 'black' }}>User: {user?.firstname || 'No user'}</Text>
+        <Text style={{ fontSize: 18, color: 'black' }}>Tasks: {tasks.length}</Text>
+        <Text style={{ fontSize: 18, color: 'black' }}>Platform: {Platform.OS}</Text>
+      </View>
         {/* Test content */}
         <View style={{ backgroundColor: 'blue', padding: 20, margin: 10 }}>
           <Text style={{ color: 'white', fontSize: 18 }}>TEST: ScrollView content is rendering!</Text>
@@ -181,8 +187,7 @@ const HomeScreen = ({ navigation }) => {
             </Card>
           )}
         </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+      </View>
       <Snackbar
         visible={!!error}
         onDismiss={() => setError("")}
@@ -191,7 +196,7 @@ const HomeScreen = ({ navigation }) => {
       >
         {error}
       </Snackbar>
-    </SafeAreaView>
+    </View>
   );
 };
 
