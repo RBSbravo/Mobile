@@ -1,39 +1,47 @@
 {
   "expo": {
-    "name": "MITO Task Manager Mobile",
+    "scheme": "mito",
+    "name": "MITO Mobile",
     "slug": "mito-mobile-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "platforms": ["ios", "android", "web"],
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#1976d2"
+      "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
       "bundleIdentifier": "com.bravorb.mitomobileapp",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#1976d2"
-      },
       "package": "com.bravorb.mitomobileapp"
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "bundler": "webpack"
+      "bundler": "metro",
+      "output": "single",
+      "name": "MITO Task Management System",
+      "shortName": "MITO Mobile",
+      "description": "Mobile task and ticket management system for MITO",
+      "startUrl": "/",
+      "display": "standalone",
+      "backgroundColor": "#ffffff",
+      "themeColor": "#1976d2",
+      "orientation": "portrait-primary",
+      "scope": "/",
+      "lang": "en",
+      "categories": ["productivity", "business", "utilities"],
+      "preferRelatedApplications": false,
+      "relatedApplications": []
     },
-    "scheme": "mito",
     "extra": {
       "eas": {
         "projectId": "20d4180e-0dae-4b52-ab09-4a8b949938ff"

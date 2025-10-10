@@ -3,21 +3,21 @@
 const API_CONFIG = {
   // Development
   development: {
-    BACKEND_API_URL: 'http://192.168.100.59:3000/api',
+    BACKEND_API_URL: process.env.REACT_APP_BACKEND_URL || 'http://192.168.100.59:3000/api',
     TIMEOUT: 10000,
     RETRY_ATTEMPTS: 3,
   },
   
   // Production
   production: {
-    BACKEND_API_URL: 'https://backend-ticketing-system.up.railway.app/api',
+    BACKEND_API_URL: process.env.REACT_APP_BACKEND_URL || 'https://mito-ticketing-system-production.up.railway.app/api',
     TIMEOUT: 15000,
     RETRY_ATTEMPTS: 2,
   },
   
   // Testing
   testing: {
-    BACKEND_API_URL: 'http://localhost:3000/api',
+    BACKEND_API_URL: process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000/api',
     TIMEOUT: 5000,
     RETRY_ATTEMPTS: 1,
   }
@@ -26,11 +26,11 @@ const API_CONFIG = {
 // Get current environment
 const getEnvironment = () => {
   // Check for production environment variables
-  if (process.env.NODE_ENV === 'production' || process.env.EXPO_PUBLIC_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production' || process.env.REACT_APP_ENV === 'production') {
     return 'production';
   }
   // Check for testing environment
-  if (process.env.NODE_ENV === 'test' || process.env.EXPO_PUBLIC_ENV === 'test') {
+  if (process.env.NODE_ENV === 'test' || process.env.REACT_APP_ENV === 'test') {
     return 'testing';
   }
   // Default to development

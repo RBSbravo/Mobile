@@ -1,12 +1,15 @@
 {
-  "name": "MITO Task Manager Mobile App",
+  "name": "MITO Task Management System",
   "short_name": "MITO Mobile",
-  "description": "Mobile task and ticket management system",
+  "description": "Mobile task and ticket management system for MITO",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1976d2",
   "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["productivity", "business", "utilities"],
   "icons": [
     {
       "src": "/icon-192.png",
@@ -19,11 +22,69 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png"
     }
   ],
-  "categories": ["productivity", "business"],
-  "lang": "en",
-  "dir": "ltr",
-  "scope": "/",
-  "prefer_related_applications": false
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View your dashboard",
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "short_name": "Tasks",
+      "description": "View your tasks",
+      "url": "/tasks",
+      "icons": [
+        {
+          "src": "/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Tickets",
+      "short_name": "Tickets",
+      "description": "View your tickets",
+      "url": "/tickets",
+      "icons": [
+        {
+          "src": "/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": []
 }

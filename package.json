@@ -7,9 +7,9 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "build": "node build.js",
-    "build:web": "node build.js",
-    "preview": "node build.js && npx serve dist",
+    "web:build": "expo export --platform web",
+    "web:serve": "expo export --platform web && npx serve dist",
+    "build": "expo export --platform web",
     "clear": "expo start --clear",
     "clean": "rm -rf node_modules && npm install"
   },
