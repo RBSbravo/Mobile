@@ -289,6 +289,7 @@ const NotificationsScreen = () => {
         <ActivityIndicator style={{ marginTop: isTablet ? 48 : 32 }} />
       ) : (
         <FlatList
+          style={{ flex: 1 }}
           data={filteredNotifications}
           keyExtractor={item => item.id?.toString() || Math.random().toString()}
           renderItem={renderItem}

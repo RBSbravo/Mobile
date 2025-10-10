@@ -287,7 +287,7 @@ const TaskDetailScreen = ({ route }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
         <ScrollView 
-          style={[styles.container, { backgroundColor: paperTheme.colors.background }]}
+          style={{ flex: 1, backgroundColor: paperTheme.colors.background }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
         >

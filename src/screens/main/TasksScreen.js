@@ -266,6 +266,7 @@ const TasksScreen = ({ navigation }) => {
           styles={styles}
         />
         <FlatList
+          style={{ flex: 1 }}
           data={filteredTasks}
           renderItem={renderItem}
           keyExtractor={item => item.id}

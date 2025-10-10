@@ -418,6 +418,7 @@ const ProfileScreen = ({ navigation }) => {
         </View>
       </View>
       <ScrollView
+        style={{ flex: 1 }}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         bounces={false}
@@ -469,7 +470,6 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     padding: theme.spacing.lg,
-    minHeight: '100%',
   },
   header: {
     alignItems: 'center',
