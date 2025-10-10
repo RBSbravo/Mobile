@@ -29,6 +29,20 @@ try {
     });
   }
   
+  // Copy and create proper PWA icons
+  console.log('🖼️ Creating PWA icons...');
+  const assetsDir = 'assets';
+  const iconSource = path.join(assetsDir, 'icon.png');
+  
+  if (fs.existsSync(iconSource)) {
+    // Copy the main icon as both 192x192 and 512x512
+    fs.copyFileSync(iconSource, path.join(distDir, 'icon-192.png'));
+    fs.copyFileSync(iconSource, path.join(distDir, 'icon-512.png'));
+    console.log('✅ Created PWA icons from assets/icon.png');
+  } else {
+    console.log('⚠️ No icon.png found in assets, using existing icons');
+  }
+  
   // Create a clean manifest.json to ensure no encoding issues
   console.log('📝 Creating clean manifest.json...');
   const manifest = {
@@ -45,20 +59,33 @@ try {
         "src": "/icon-192.png",
         "sizes": "192x192",
         "type": "image/png",
-        "purpose": "any maskable"
+        "purpose": "any"
       },
       {
         "src": "/icon-512.png",
         "sizes": "512x512",
         "type": "image/png",
-        "purpose": "any maskable"
+        "purpose": "any"
+      },
+      {
+        "src": "/icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "maskable"
+      },
+      {
+        "src": "/icon-512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
       }
     ],
     "categories": ["productivity", "business"],
     "lang": "en",
     "dir": "ltr",
     "scope": "/",
-    "prefer_related_applications": false
+    "prefer_related_applications": false,
+    "id": "mito-mobile-app"
   };
   
   fs.writeFileSync(path.join(distDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
@@ -214,6 +241,13 @@ try {
     // PWA Installation
     let deferredPrompt;
     let isInstallable = false;
+    let isInstalled = false;
+    
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+      isInstalled = true;
+      console.log('PWA is already installed');
+    }
     
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -226,28 +260,42 @@ try {
       if (installBtn) {
         installBtn.style.display = 'block';
         installBtn.textContent = 'Install App';
+        installBtn.style.background = '#1976d2';
+        installBtn.style.color = 'white';
       }
     });
     
     function installPWA() {
+      if (isInstalled) {
+        alert('App is already installed!');
+        return;
+      }
+      
       if (deferredPrompt && isInstallable) {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
             console.log('User accepted the install prompt');
-            alert('App installed successfully!');
+            isInstalled = true;
+            isInstallable = false;
+            alert('App installed successfully! You can now close this tab and use the installed app.');
           } else {
             console.log('User dismissed the install prompt');
           }
           deferredPrompt = null;
-          isInstallable = false;
         });
       } else {
-        // Check if already installed
-        if (window.matchMedia('(display-mode: standalone)').matches) {
-          alert('App is already installed!');
+        // Check browser support
+        const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+        const isEdge = /Edg/.test(navigator.userAgent);
+        const isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+        
+        if (isSafari) {
+          alert('To install this app on iOS Safari:\\n1. Tap the Share button\\n2. Scroll down and tap "Add to Home Screen"\\n3. Tap "Add"');
+        } else if (isChrome || isEdge) {
+          alert('Installation not available. Make sure:\\n1. You\\'re using HTTPS\\n2. The app meets PWA requirements\\n3. You haven\\'t already installed it');
         } else {
-          alert('PWA installation not available on this device. Try using Chrome or Edge browser.');
+          alert('PWA installation is not supported in this browser. Please use Chrome, Edge, or Safari.');
         }
       }
     }
@@ -255,6 +303,7 @@ try {
     // Check if app is already installed
     window.addEventListener('appinstalled', (evt) => {
       console.log('PWA was installed');
+      isInstalled = true;
       isInstallable = false;
     });
     
