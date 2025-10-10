@@ -50,18 +50,14 @@ const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-        <ScrollView 
-          contentContainerStyle={[
-            { flexGrow: 1, justifyContent: 'center', alignItems: 'center', padding: 16 },
-            Platform.OS === 'web' && { minHeight: '100vh', paddingTop: 40, paddingBottom: 40 }
-          ]}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          <Card style={[
-            { width: '100%', maxWidth: 400, borderRadius: 20, paddingVertical: 20, paddingHorizontal: 0, elevation: 4, backgroundColor: paperTheme.colors.surface },
-            Platform.OS === 'web' && { marginVertical: 20 }
-          ]}>
+        <View style={{ 
+          flex: 1, 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          padding: 16,
+          ...(Platform.OS === 'web' && { minHeight: '100vh' })
+        }}>
+          <Card style={{ width: '100%', maxWidth: 400, borderRadius: 20, paddingVertical: 20, paddingHorizontal: 0, elevation: 4, backgroundColor: paperTheme.colors.surface }}>
             <View style={{ alignItems: 'center', marginBottom: 18, paddingHorizontal: 18 }}>
             <Logo />
               <Text variant="headlineLarge" style={{ color: paperTheme.colors.primary, fontWeight: 'bold', marginTop: 6, fontSize: 24 }}>Welcome Back</Text>
@@ -147,7 +143,7 @@ const LoginScreen = ({ navigation }) => {
           >
             {error}
           </Snackbar>
-        </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
