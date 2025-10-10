@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, useWindowDimensions } from 'react-native';
+import { View, StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, useWindowDimensions, Platform } from 'react-native';
 import { Text, Card, useTheme, Snackbar } from 'react-native-paper';
 import { theme as customTheme, styles as globalStyles } from '../../theme';
 import { useAuth } from '../../context/AuthContext';
@@ -128,7 +128,11 @@ const HomeScreen = ({ navigation }) => {
         subtitle={"Here's a look at your day."}
       />
       <ScrollView 
-        contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16 }]}
+        contentContainerStyle={[
+          styles.scrollContent, 
+          { padding: isTablet ? 32 : 16 },
+          Platform.OS === 'web' && { minHeight: 'calc(100vh - 80px)' }
+        ]}
         showsVerticalScrollIndicator={false}
         bounces={false}
       >
