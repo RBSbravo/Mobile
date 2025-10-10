@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, Platform } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text, Card, Button, Avatar, useTheme, Dialog, Portal, ActivityIndicator, Title, Caption, TouchableRipple, Switch, Snackbar, TextInput, HelperText } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme, styles as globalStyles } from '../../theme';
@@ -417,10 +417,7 @@ const ProfileScreen = ({ navigation }) => {
         </View>
       </View>
       <ScrollView
-        contentContainerStyle={[
-          styles.scrollContent,
-          Platform.OS === 'web' && { minHeight: 'calc(100vh - 80px)' }
-        ]}
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         bounces={false}
       >

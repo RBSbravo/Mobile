@@ -231,10 +231,7 @@ const TasksScreen = ({ navigation }) => {
         subtitle="Manage your tasks here"
       />
       <KeyboardAvoidingView
-        style={{ 
-          flex: 1,
-          ...(RNPlatform.OS === 'web' && { minHeight: 'calc(100vh - 80px)' })
-        }}
+        style={{ flex: 1 }}
         behavior={RNPlatform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={80}
       >
@@ -269,7 +266,6 @@ const TasksScreen = ({ navigation }) => {
           styles={styles}
         />
         <FlatList
-          key={`tasks-${isTablet ? 'tablet' : 'mobile'}`}
           data={filteredTasks}
           renderItem={renderItem}
           keyExtractor={item => item.id}
