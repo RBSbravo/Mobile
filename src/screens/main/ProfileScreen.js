@@ -218,7 +218,7 @@ const ProfileScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right', 'bottom']}>
+    <View style={{ flex: 1, backgroundColor: paperTheme.colors.background }}>
       <Portal>
         <Dialog 
           visible={logoutDialogVisible} 
@@ -416,10 +416,11 @@ const ProfileScreen = ({ navigation }) => {
           <Caption style={[styles.caption, { color: paperTheme.colors.textSecondary }]}>{user?.email || ''}</Caption>
         </View>
       </View>
-      <View style={[
-        styles.scrollContent,
-        Platform.OS === 'web' && { minHeight: 'calc(100vh - 120px)', paddingTop: 0 }
-      ]}>
+      <ScrollView 
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16 }}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.section}>
           <Card style={[styles.infoCard, { backgroundColor: paperTheme.colors.surface, ...(paperTheme.dark && { borderColor: paperTheme.colors.border, borderWidth: 1 }) }]}>
             <Card.Content>
@@ -449,7 +450,7 @@ const ProfileScreen = ({ navigation }) => {
             </View>
           </TouchableRipple>
         </View>
-      </View>
+      </ScrollView>
       <Snackbar
         visible={!!error}
         onDismiss={() => setError("")}
@@ -458,7 +459,7 @@ const ProfileScreen = ({ navigation }) => {
       >
         {error}
       </Snackbar>
-    </SafeAreaView>
+    </View>
   );
 };
 

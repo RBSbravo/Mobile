@@ -248,7 +248,7 @@ const NotificationsScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right', 'bottom']}>
+    <View style={{ flex: 1, backgroundColor: paperTheme.colors.background }}>
       <ScreenHeader
         leftIcon={<MaterialIcons name="notifications" size={28} color={paperTheme.colors.primary} />}
         title="Notifications"
@@ -295,13 +295,11 @@ const NotificationsScreen = () => {
           refreshing={loading}
           onRefresh={fetchNotifications}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={[
-            { paddingHorizontal: isTablet ? 32 : 12, paddingBottom: isTablet ? 32 : 16 },
-            Platform.OS === 'web' && { minHeight: 'calc(100vh - 120px)' }
-          ]}
+          style={{ flex: 1 }}
+          contentContainerStyle={{ paddingHorizontal: isTablet ? 32 : 12, paddingBottom: isTablet ? 32 : 16 }}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 

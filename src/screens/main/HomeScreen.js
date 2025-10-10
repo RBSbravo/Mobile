@@ -121,17 +121,17 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right', 'bottom']}>
+    <View style={{ flex: 1, backgroundColor: paperTheme.colors.background }}>
       <ScreenHeader
         leftIcon={<View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: paperTheme.colors.primary, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>{user?.firstname ? user.firstname.charAt(0).toUpperCase() : 'U'}</Text></View>}
         title={`Welcome, ${user?.firstname || 'User'}!`}
         subtitle={"Here's a look at your day."}
       />
-      <View style={[
-        styles.scrollContent, 
-        { padding: isTablet ? 32 : 16 },
-        Platform.OS === 'web' && { minHeight: 'calc(100vh - 120px)', paddingTop: 0 }
-      ]}>
+      <ScrollView 
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: isTablet ? 32 : 16 }}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={{ marginVertical: customTheme.spacing.lg, backgroundColor: paperTheme.colors.border, height: 1, width: '100%' }} />
         <View style={{
           backgroundColor: paperTheme.colors.primaryContainer,
@@ -172,7 +172,7 @@ const HomeScreen = ({ navigation }) => {
             </Card>
           )}
         </View>
-      </View>
+      </ScrollView>
       <Snackbar
         visible={!!error}
         onDismiss={() => setError("")}
@@ -181,13 +181,13 @@ const HomeScreen = ({ navigation }) => {
       >
         {error}
       </Snackbar>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   scrollContent: {
-    flexGrow: 1,
+    flex: 1,
     padding: customTheme.spacing.lg,
   },
   statsGrid: {

@@ -224,7 +224,7 @@ const TasksScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right', 'bottom']}>
+    <View style={{ flex: 1, backgroundColor: paperTheme.colors.background }}>
       <ScreenHeader
         leftIcon={<MaterialIcons name="assignment" size={28} color={paperTheme.colors.primary} />}
         title="My Tasks"
@@ -269,10 +269,10 @@ const TasksScreen = ({ navigation }) => {
           data={filteredTasks}
           renderItem={renderItem}
           keyExtractor={item => item.id}
+          style={{ flex: 1 }}
           contentContainerStyle={[
             styles.listContent,
-            { padding: isTablet ? 32 : 16, paddingTop: 8 },
-            Platform.OS === 'web' && { minHeight: 'calc(100vh - 120px)' }
+            { padding: isTablet ? 32 : 16, paddingTop: 8 }
           ]}
           ListEmptyComponent={renderEmptyComponent}
           refreshControl={
@@ -346,7 +346,7 @@ const TasksScreen = ({ navigation }) => {
           {error}
         </Snackbar>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 
