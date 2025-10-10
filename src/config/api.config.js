@@ -25,25 +25,16 @@ const API_CONFIG = {
 
 // Get current environment
 const getEnvironment = () => {
-  // Check for production build indicators
-  if (typeof window !== 'undefined' && window.location) {
-    // Check if running on Vercel or production domain
-    if (window.location.hostname.includes('vercel.app') || 
-        window.location.hostname.includes('railway.app') ||
-        window.location.protocol === 'https:') {
-      return 'production';
-    }
+  // Check for production environment
+  if (typeof window !== 'undefined' && window.location && window.location.hostname !== 'localhost') {
+    return 'production';
   }
-  
-  // Check for build-time environment variables
-  if (typeof process !== 'undefined' && process.env) {
-    if (process.env.NODE_ENV === 'production') {
-      return 'production';
-    }
+  // You can set this via environment variables or build configuration
+  if (__DEV__) {
+    return 'development';
   }
-  
-  // Default to development for local development
-  return 'development';
+  // Default to production for web builds
+  return 'production';
 };
 
 // Export current config

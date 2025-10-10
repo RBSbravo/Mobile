@@ -1,15 +1,7 @@
 {
-  "name": "MITO Task Manager Mobile App",
-  "short_name": "MITO Mobile",
-  "description": "Mobile task and ticket management system",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1976d2",
-  "orientation": "portrait-primary",
-  "scope": "/",
-  "lang": "en",
-  "categories": ["productivity", "business"],
+  "short_name": "MITO Task Manager",
+  "name": "MITO Task Management System",
+  "description": "A comprehensive task and ticket management system for teams",
   "icons": [
     {
       "src": "/icon-192.png",
@@ -24,19 +16,27 @@
       "purpose": "any maskable"
     }
   ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#667eea",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["productivity", "business", "utilities"],
   "screenshots": [
     {
-      "src": "/screenshot-mobile.png",
-      "sizes": "390x844",
+      "src": "/icon-512.png",
+      "sizes": "512x512",
       "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "wide"
     }
   ],
   "shortcuts": [
     {
       "name": "Dashboard",
       "short_name": "Dashboard",
-      "description": "View your dashboard",
+      "description": "View your task dashboard",
       "url": "/dashboard",
       "icons": [
         {
