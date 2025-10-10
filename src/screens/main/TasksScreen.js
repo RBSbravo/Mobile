@@ -269,6 +269,7 @@ const TasksScreen = ({ navigation }) => {
           styles={styles}
         />
         <FlatList
+          key={`tasks-${isTablet ? 'tablet' : 'mobile'}`}
           data={filteredTasks}
           renderItem={renderItem}
           keyExtractor={item => item.id}
