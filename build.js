@@ -20,10 +20,49 @@ try {
     files.forEach(file => {
       const srcPath = path.join(publicDir, file);
       const destPath = path.join(distDir, file);
-      fs.copyFileSync(srcPath, destPath);
-      console.log(`✅ Copied ${file}`);
+      
+      // Ensure proper file copying
+      if (fs.statSync(srcPath).isFile()) {
+        fs.copyFileSync(srcPath, destPath);
+        console.log(`✅ Copied ${file}`);
+      }
     });
   }
+  
+  // Create a clean manifest.json to ensure no encoding issues
+  console.log('📝 Creating clean manifest.json...');
+  const manifest = {
+    "name": "MITO Task Manager Mobile App",
+    "short_name": "MITO Mobile",
+    "description": "Mobile task and ticket management system",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#1976d2",
+    "orientation": "portrait-primary",
+    "icons": [
+      {
+        "src": "/icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "/icon-512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any maskable"
+      }
+    ],
+    "categories": ["productivity", "business"],
+    "lang": "en",
+    "dir": "ltr",
+    "scope": "/",
+    "prefer_related_applications": false
+  };
+  
+  fs.writeFileSync(path.join(distDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
+  console.log('✅ Created clean manifest.json');
 
   // Create a comprehensive PWA index.html
   console.log('🔨 Creating PWA index.html...');
@@ -174,25 +213,50 @@ try {
   <script>
     // PWA Installation
     let deferredPrompt;
+    let isInstallable = false;
     
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
+      isInstallable = true;
+      console.log('PWA install prompt available');
+      
+      // Show install button
+      const installBtn = document.querySelector('button[onclick="installPWA()"]');
+      if (installBtn) {
+        installBtn.style.display = 'block';
+        installBtn.textContent = 'Install App';
+      }
     });
     
     function installPWA() {
-      if (deferredPrompt) {
+      if (deferredPrompt && isInstallable) {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
             console.log('User accepted the install prompt');
+            alert('App installed successfully!');
+          } else {
+            console.log('User dismissed the install prompt');
           }
           deferredPrompt = null;
+          isInstallable = false;
         });
       } else {
-        alert('PWA installation not available on this device');
+        // Check if already installed
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+          alert('App is already installed!');
+        } else {
+          alert('PWA installation not available on this device. Try using Chrome or Edge browser.');
+        }
       }
     }
+    
+    // Check if app is already installed
+    window.addEventListener('appinstalled', (evt) => {
+      console.log('PWA was installed');
+      isInstallable = false;
+    });
     
     // Hide loading screen
     window.addEventListener('load', function() {
