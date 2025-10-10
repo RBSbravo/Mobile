@@ -284,9 +284,8 @@ const TaskDetailScreen = ({ route }) => {
   }
 
   return (
-    <ScrollView 
+    <View 
       style={[styles.container, { backgroundColor: paperTheme.colors.background }]}
-      showsVerticalScrollIndicator={false}
     >
       <Card 
         style={[styles.card, { backgroundColor: paperTheme.colors.surface, ...(paperTheme.dark && { borderColor: paperTheme.colors.border, borderWidth: 1 }) }]}
@@ -663,7 +662,7 @@ const TaskDetailScreen = ({ route }) => {
           </View>
         </Modal>
       </Portal>
-    </ScrollView>
+    </View>
   );
 };
 

@@ -127,11 +127,7 @@ const HomeScreen = ({ navigation }) => {
         title={`Welcome, ${user?.firstname || 'User'}!`}
         subtitle={"Here's a look at your day."}
       />
-      <ScrollView 
-        contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16 }]}
-        showsVerticalScrollIndicator={false}
-        bounces={false}
-      >
+      <View style={[styles.scrollContent, { padding: isTablet ? 32 : 16 }]}>
         <View style={{ marginVertical: customTheme.spacing.lg, backgroundColor: paperTheme.colors.border, height: 1, width: '100%' }} />
         <View style={{
           backgroundColor: paperTheme.colors.primaryContainer,
@@ -172,7 +168,7 @@ const HomeScreen = ({ navigation }) => {
             </Card>
           )}
         </View>
-      </ScrollView>
+      </View>
       <Snackbar
         visible={!!error}
         onDismiss={() => setError("")}

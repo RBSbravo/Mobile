@@ -416,11 +416,7 @@ const ProfileScreen = ({ navigation }) => {
           <Caption style={[styles.caption, { color: paperTheme.colors.textSecondary }]}>{user?.email || ''}</Caption>
         </View>
       </View>
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-        bounces={false}
-      >
+      <View style={styles.scrollContent}>
         <View style={styles.section}>
           <Card style={[styles.infoCard, { backgroundColor: paperTheme.colors.surface, ...(paperTheme.dark && { borderColor: paperTheme.colors.border, borderWidth: 1 }) }]}>
             <Card.Content>
@@ -450,7 +446,7 @@ const ProfileScreen = ({ navigation }) => {
             </View>
           </TouchableRipple>
         </View>
-      </ScrollView>
+      </View>
       <Snackbar
         visible={!!error}
         onDismiss={() => setError("")}
