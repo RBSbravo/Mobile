@@ -1,7 +1,7 @@
 {
-  "name": "MITO Task Management System",
+  "name": "MITO Task Manager Mobile App",
   "short_name": "MITO Mobile",
-  "description": "Mobile task and ticket management system for MITO",
+  "description": "Mobile task and ticket management system",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -9,7 +9,7 @@
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "en",
-  "categories": ["productivity", "business", "utilities"],
+  "categories": ["productivity", "business"],
   "icons": [
     {
       "src": "/icon-192.png",
@@ -22,21 +22,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
-    },
-    {
-      "src": "/icon-144.png",
-      "sizes": "144x144",
-      "type": "image/png"
-    },
-    {
-      "src": "/icon-96.png",
-      "sizes": "96x96",
-      "type": "image/png"
-    },
-    {
-      "src": "/icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png"
     }
   ],
   "screenshots": [
@@ -55,36 +40,22 @@
       "url": "/dashboard",
       "icons": [
         {
-          "src": "/icon-96.png",
-          "sizes": "96x96"
+          "src": "/icon-192.png",
+          "sizes": "192x192"
         }
       ]
     },
     {
       "name": "Tasks",
       "short_name": "Tasks",
-      "description": "View your tasks",
+      "description": "Manage your tasks",
       "url": "/tasks",
       "icons": [
         {
-          "src": "/icon-96.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Tickets",
-      "short_name": "Tickets",
-      "description": "View your tickets",
-      "url": "/tickets",
-      "icons": [
-        {
-          "src": "/icon-96.png",
-          "sizes": "96x96"
+          "src": "/icon-192.png",
+          "sizes": "192x192"
         }
       ]
     }
-  ],
-  "prefer_related_applications": false,
-  "related_applications": []
+  ]
 }

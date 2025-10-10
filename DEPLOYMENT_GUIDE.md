@@ -1,214 +1,147 @@
-# MITO Mobile PWA Deployment Guide
+# MITO Mobile App - PWA Deployment Guide
 
-This guide will help you deploy the MITO Mobile app as a Progressive Web App (PWA) on Vercel.
+## 🚀 Vercel Deployment Instructions
 
-## 🚀 Quick Deployment Steps
-
-### 1. Prerequisites
+### Prerequisites
 
 - Vercel account (free at [vercel.com](https://vercel.com))
-- GitHub account
+- GitHub repository with your mobile app code
 - Railway backend deployed and running
 
-### 2. Prepare Your Repository
+### Step-by-Step Deployment
 
-1. Push your code to GitHub
-2. Ensure all files are committed and pushed
+#### 1. Prepare Your Repository
 
-### 3. Deploy to Vercel
+1. Commit all changes to your GitHub repository
+2. Ensure all PWA files are in place:
+   - `public/manifest.json`
+   - `public/sw.js`
+   - `public/index.html`
+   - `public/icon-192.png`
+   - `public/icon-512.png`
+   - `vercel.json`
 
-#### Option A: Deploy via Vercel Dashboard
+#### 2. Deploy to Vercel
 
 1. Go to [vercel.com](https://vercel.com) and sign in
 2. Click "New Project"
 3. Import your GitHub repository
-4. Set the following configuration:
+4. Configure project settings:
    - **Framework Preset**: Other
    - **Root Directory**: `mobile-app`
-   - **Build Command**: `npm run build`
+   - **Build Command**: `npm run build:web`
    - **Output Directory**: `dist`
    - **Install Command**: `npm install`
 
-#### Option B: Deploy via Vercel CLI
+#### 3. Set Environment Variables
 
-```bash
-# Install Vercel CLI
-npm i -g vercel
+In Vercel dashboard, go to Settings > Environment Variables and add:
 
-# Navigate to mobile-app directory
-cd mobile-app
-
-# Deploy
-vercel --prod
+```
+NEXT_PUBLIC_API_BASE_URL=https://backend-ticketing-system.up.railway.app/api
+NEXT_PUBLIC_SOCKET_URL=https://backend-ticketing-system.up.railway.app
+NEXT_PUBLIC_WS_URL=wss://backend-ticketing-system.up.railway.app
+NEXT_PUBLIC_APP_NAME=MITO Task Manager Mobile App
+NEXT_PUBLIC_APP_VERSION=1.0.0
+NODE_ENV=production
 ```
 
-### 4. Environment Variables
+#### 4. Deploy
 
-In your Vercel project settings, add these environment variables:
+1. Click "Deploy"
+2. Wait for build to complete
+3. Your PWA will be available at the provided Vercel URL
 
-- `NODE_ENV`: `production`
-- `REACT_APP_ENV`: `production`
-- `REACT_APP_BACKEND_URL`: `https://your-railway-backend.up.railway.app/api`
-- `REACT_APP_SOCKET_URL`: `https://your-railway-backend.up.railway.app`
+### 🔧 Local Testing
 
-### 5. Custom Domain (Optional)
-
-1. In Vercel dashboard, go to your project settings
-2. Add your custom domain
-3. Update DNS records as instructed
-
-## 🔧 Configuration Files
-
-### PWA Manifest (`public/manifest.json`)
-
-- App name, icons, theme colors
-- Display mode: standalone
-- Offline capabilities
-
-### Service Worker (`public/sw.js`)
-
-- Offline caching
-- Background sync
-- Push notifications
-
-### Vercel Configuration (`vercel.json`)
-
-- Build settings
-- Routing rules
-- Cache headers
-
-## 📱 PWA Features
-
-### ✅ Implemented Features
-
-- **Offline Support**: App works without internet
-- **Install Prompt**: Users can install as native app
-- **Push Notifications**: Real-time notifications
-- **Background Sync**: Sync data when online
-- **Responsive Design**: Works on all devices
-
-### 🎯 PWA Checklist
-
-- [x] Web App Manifest
-- [x] Service Worker
-- [x] HTTPS (Vercel provides this)
-- [x] Responsive design
-- [x] Offline functionality
-- [x] Installable
-
-## 🧪 Testing Your PWA
-
-### 1. Local Testing
+#### Test PWA Features Locally
 
 ```bash
-# Build the app
-npm run build
+# Install dependencies
+npm install
 
-# Serve locally
-npm run web:serve
+# Start development server
+npm run web
+
+# Build for production
+npm run build:web
 ```
 
-### 2. PWA Testing Tools
-
-- **Chrome DevTools**: Lighthouse audit
-- **PWA Builder**: Microsoft's PWA testing tool
-- **Web App Manifest Validator**: Validate manifest.json
-
-### 3. Mobile Testing
-
-1. Open your deployed URL on mobile
-2. Look for "Add to Home Screen" prompt
-3. Test offline functionality
-4. Test push notifications
-
-## 🔍 Troubleshooting
-
-### Common Issues
-
-#### Build Fails
-
-- Check Node.js version (should be 16+)
-- Ensure all dependencies are installed
-- Check for TypeScript errors
-
-#### PWA Not Installable
-
-- Verify manifest.json is accessible
-- Check service worker registration
-- Ensure HTTPS is enabled
-
-#### Backend Connection Issues
-
-- Verify Railway backend URL
-- Check CORS settings
-- Test API endpoints manually
-
-### Debug Commands
+#### Test Production Build Locally
 
 ```bash
-# Check build output
-npm run build
-
-# Test locally
-npm run web:serve
-
-# Check service worker
-# Open DevTools > Application > Service Workers
+# Serve the built files
+npx serve dist
 ```
 
-## 📊 Performance Optimization
+### 📱 PWA Features
 
-### Build Optimization
+Your mobile app now includes:
 
-- Code splitting
-- Tree shaking
-- Asset optimization
+- ✅ **Offline Support**: Service worker caches essential files
+- ✅ **Install Prompt**: Users can install as native app
+- ✅ **Responsive Design**: Works on all device sizes
+- ✅ **Push Notifications**: Real-time notifications support
+- ✅ **Background Sync**: Syncs data when connection restored
+- ✅ **App-like Experience**: Full-screen, standalone mode
 
-### PWA Optimization
+### 🔗 Backend Integration
 
-- Efficient caching strategies
-- Minimal service worker
-- Optimized manifest
+The app automatically connects to your Railway backend:
 
-## 🔄 Updates and Maintenance
+- **API Base URL**: `https://backend-ticketing-system.up.railway.app/api`
+- **Socket.IO**: Real-time features enabled
+- **Authentication**: JWT token-based auth
+- **File Uploads**: Supports task attachments
 
-### Updating the App
+### 🐛 Troubleshooting
 
-1. Make changes to your code
-2. Push to GitHub
-3. Vercel automatically redeploys
+#### Common Issues:
 
-### Service Worker Updates
+1. **Build Fails**: Check Node.js version (use 18+)
+2. **API Errors**: Verify Railway backend is running
+3. **PWA Not Installing**: Check manifest.json and service worker
+4. **Offline Issues**: Clear browser cache and reinstall
 
-- Service worker updates automatically
-- Users get new version on next visit
-- Force update by incrementing version in sw.js
+#### Debug Commands:
 
-## 📞 Support
+```bash
+# Check service worker registration
+# Open browser DevTools > Application > Service Workers
 
-If you encounter issues:
+# Test offline functionality
+# DevTools > Network > Offline checkbox
+
+# Check PWA manifest
+# DevTools > Application > Manifest
+```
+
+### 📊 Performance Optimization
+
+The PWA includes:
+
+- **Code Splitting**: Loads only necessary components
+- **Asset Caching**: Static files cached for offline use
+- **Lazy Loading**: Images and components load on demand
+- **Compression**: Gzip compression enabled
+- **CDN**: Global content delivery via Vercel
+
+### 🔄 Updates and Maintenance
+
+- **Automatic Updates**: Service worker handles updates
+- **Version Control**: Track changes via Git
+- **Monitoring**: Use Vercel Analytics for performance metrics
+- **Backup**: Regular database backups via Railway
+
+### 📞 Support
+
+For issues or questions:
 
 1. Check Vercel deployment logs
-2. Test locally first
-3. Verify environment variables
-4. Check Railway backend status
-
-## 🎉 Success!
-
-Once deployed, your MITO Mobile PWA will be:
-
-- Accessible at your Vercel URL
-- Installable on mobile devices
-- Working offline
-- Connected to your Railway backend
-- Ready for production use!
+2. Verify Railway backend status
+3. Test API endpoints manually
+4. Check browser console for errors
 
 ---
 
-**Next Steps:**
-
-1. Test the deployed PWA
-2. Share with your team
-3. Monitor performance
-4. Gather user feedback
-5. Iterate and improve
+**🎉 Congratulations!** Your MITO Mobile App is now deployed as a PWA on Vercel!

@@ -3,21 +3,21 @@
 const API_CONFIG = {
   // Development
   development: {
-    BACKEND_API_URL: process.env.REACT_APP_BACKEND_URL || 'http://192.168.100.59:3000/api',
+    BACKEND_API_URL: 'http://192.168.100.59:3000/api',
     TIMEOUT: 10000,
     RETRY_ATTEMPTS: 3,
   },
   
   // Production
   production: {
-    BACKEND_API_URL: process.env.REACT_APP_BACKEND_URL || 'https://mito-ticketing-system-production.up.railway.app/api',
+    BACKEND_API_URL: 'https://backend-ticketing-system.up.railway.app/api',
     TIMEOUT: 15000,
     RETRY_ATTEMPTS: 2,
   },
   
   // Testing
   testing: {
-    BACKEND_API_URL: process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000/api',
+    BACKEND_API_URL: 'http://localhost:3000/api',
     TIMEOUT: 5000,
     RETRY_ATTEMPTS: 1,
   }
@@ -25,15 +25,24 @@ const API_CONFIG = {
 
 // Get current environment
 const getEnvironment = () => {
-  // Check for production environment variables
-  if (process.env.NODE_ENV === 'production' || process.env.REACT_APP_ENV === 'production') {
-    return 'production';
+  // Check for production build indicators
+  if (typeof window !== 'undefined' && window.location) {
+    // Check if running on Vercel or production domain
+    if (window.location.hostname.includes('vercel.app') || 
+        window.location.hostname.includes('railway.app') ||
+        window.location.protocol === 'https:') {
+      return 'production';
+    }
   }
-  // Check for testing environment
-  if (process.env.NODE_ENV === 'test' || process.env.REACT_APP_ENV === 'test') {
-    return 'testing';
+  
+  // Check for build-time environment variables
+  if (typeof process !== 'undefined' && process.env) {
+    if (process.env.NODE_ENV === 'production') {
+      return 'production';
+    }
   }
-  // Default to development
+  
+  // Default to development for local development
   return 'development';
 };
 

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1976d2" />
+    <meta name="description" content="MITO Task Manager Mobile App - Manage your tasks and tickets on the go" />
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="MITO Mobile" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    
+    <!-- Preconnect to backend -->
+    <link rel="preconnect" href="https://backend-ticketing-system.up.railway.app" />
+    
+    <!-- Meta tags for better SEO and social sharing -->
+    <meta property="og:title" content="MITO Task Manager Mobile App" />
+    <meta property="og:description" content="Manage your tasks and tickets on the go with MITO Mobile" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/icon-512.png" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="MITO Task Manager Mobile App" />
+    <meta name="twitter:description" content="Manage your tasks and tickets on the go with MITO Mobile" />
+    <meta name="twitter:image" content="/icon-512.png" />
+    
+    <title>MITO Task Manager Mobile App</title>
+    
+    <!-- Loading styles -->
+    <style>
+        /* Loading screen styles */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1976d2, #42a5f5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .loading-logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        .loading-text {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .loading-subtitle {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Hide loading screen when app loads */
+        .app-loaded #loading-screen {
+            display: none;
+        }
+        
+        /* App container */
+        #root {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .loading-text {
+                font-size: 20px;
+            }
+            
+            .loading-subtitle {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <noscript>
+        <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+            <h1>JavaScript Required</h1>
+            <p>This application requires JavaScript to run. Please enable JavaScript in your browser.</p>
+        </div>
+    </noscript>
+    
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <img src="/mito_logo.png" alt="MITO Logo" class="loading-logo" />
+        <div class="loading-text">MITO Mobile</div>
+        <div class="loading-subtitle">Task Manager</div>
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <!-- React App Root -->
+    <div id="root"></div>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+        
+        // Hide loading screen when React app loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.add('app-loaded');
+            }, 1000);
+        });
+        
+        // Handle PWA install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button or notification
+            console.log('PWA install prompt available');
+        });
+        
+        // Handle PWA install
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            deferredPrompt = null;
+        });
+        
+        // Handle offline/online status
+        window.addEventListener('online', () => {
+            console.log('App is online');
+            // Trigger sync of offline data
+            if ('serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
+                navigator.serviceWorker.ready.then(registration => {
+                    registration.sync.register('background-sync');
+                });
+            }
+        });
+        
+        window.addEventListener('offline', () => {
+            console.log('App is offline');
+        });
+    </script>
+</body>
+</html>

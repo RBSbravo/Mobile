@@ -1,4 +1,4 @@
-// Service Worker for MITO Mobile PWA
+// Service Worker for MITO Mobile App PWA
 const CACHE_NAME = 'mito-mobile-v1';
 const STATIC_CACHE_NAME = 'mito-static-v1';
 const DYNAMIC_CACHE_NAME = 'mito-dynamic-v1';
@@ -36,88 +36,76 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   console.log('Service Worker: Activating...');
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== STATIC_CACHE_NAME && cacheName !== DYNAMIC_CACHE_NAME) {
-            console.log('Service Worker: Deleting old cache', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => {
-      console.log('Service Worker: Activation complete');
-      return self.clients.claim();
-    })
+    caches.keys()
+      .then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            if (cacheName !== STATIC_CACHE_NAME && cacheName !== DYNAMIC_CACHE_NAME) {
+              console.log('Service Worker: Deleting old cache', cacheName);
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      })
+      .then(() => {
+        console.log('Service Worker: Activation complete');
+        return self.clients.claim();
+      })
   );
 });
 
 // Fetch event - serve cached content when offline
 self.addEventListener('fetch', (event) => {
-  const { request } = event;
-  const url = new URL(request.url);
-
   // Skip non-GET requests
-  if (request.method !== 'GET') {
+  if (event.request.method !== 'GET') {
     return;
   }
 
-  // Skip external requests (API calls, etc.)
-  if (url.origin !== location.origin) {
+  // Skip API requests to backend (let them fail gracefully)
+  if (event.request.url.includes('/api/')) {
     return;
   }
 
-  // Handle different types of requests
-  if (request.destination === 'document') {
-    // For HTML pages, try network first, then cache
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          // Cache successful responses
-          if (response.status === 200) {
-            const responseClone = response.clone();
+  event.respondWith(
+    caches.match(event.request)
+      .then((cachedResponse) => {
+        // Return cached version if available
+        if (cachedResponse) {
+          console.log('Service Worker: Serving from cache', event.request.url);
+          return cachedResponse;
+        }
+
+        // Otherwise fetch from network
+        return fetch(event.request)
+          .then((response) => {
+            // Don't cache non-successful responses
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+
+            // Clone the response
+            const responseToCache = response.clone();
+
+            // Cache dynamic content
             caches.open(DYNAMIC_CACHE_NAME)
               .then((cache) => {
-                cache.put(request, responseClone);
+                cache.put(event.request, responseToCache);
               });
-          }
-          return response;
-        })
-        .catch(() => {
-          // If network fails, try cache
-          return caches.match(request)
-            .then((response) => {
-              if (response) {
-                return response;
-              }
-              // If no cache, return offline page
-              return caches.match('/');
-            });
-        })
-    );
-  } else {
-    // For static assets, try cache first, then network
-    event.respondWith(
-      caches.match(request)
-        .then((response) => {
-          if (response) {
+
             return response;
-          }
-          return fetch(request)
-            .then((response) => {
-              // Cache successful responses
-              if (response.status === 200) {
-                const responseClone = response.clone();
-                caches.open(DYNAMIC_CACHE_NAME)
-                  .then((cache) => {
-                    cache.put(request, responseClone);
-                  });
-              }
-              return response;
-            });
-        })
-    );
-  }
+          })
+          .catch((error) => {
+            console.log('Service Worker: Fetch failed', error);
+            
+            // Return offline page for navigation requests
+            if (event.request.destination === 'document') {
+              return caches.match('/');
+            }
+            
+            throw error;
+          });
+      })
+  );
 });
 
 // Background sync for offline actions
@@ -126,21 +114,56 @@ self.addEventListener('sync', (event) => {
   
   if (event.tag === 'background-sync') {
     event.waitUntil(
-      // Handle background sync tasks
-      handleBackgroundSync()
+      // Handle offline actions when connection is restored
+      handleOfflineActions()
     );
   }
 });
 
-// Push notifications
+// Handle offline actions
+async function handleOfflineActions() {
+  try {
+    // Get offline actions from IndexedDB
+    const offlineActions = await getOfflineActions();
+    
+    for (const action of offlineActions) {
+      try {
+        await processOfflineAction(action);
+        await removeOfflineAction(action.id);
+      } catch (error) {
+        console.error('Service Worker: Failed to process offline action', error);
+      }
+    }
+  } catch (error) {
+    console.error('Service Worker: Background sync failed', error);
+  }
+}
+
+// Placeholder functions for offline action handling
+async function getOfflineActions() {
+  // Implement IndexedDB logic to retrieve offline actions
+  return [];
+}
+
+async function processOfflineAction(action) {
+  // Implement logic to process offline actions
+  console.log('Processing offline action:', action);
+}
+
+async function removeOfflineAction(actionId) {
+  // Implement logic to remove processed offline actions
+  console.log('Removing offline action:', actionId);
+}
+
+// Push notification handling
 self.addEventListener('push', (event) => {
   console.log('Service Worker: Push notification received');
   
   const options = {
     body: event.data ? event.data.text() : 'You have a new notification',
     icon: '/icon-192.png',
-    badge: '/icon-96.png',
-    vibrate: [100, 50, 100],
+    badge: '/icon-192.png',
+    vibrate: [200, 100, 200],
     data: {
       dateOfArrival: Date.now(),
       primaryKey: 1
@@ -149,12 +172,12 @@ self.addEventListener('push', (event) => {
       {
         action: 'explore',
         title: 'View',
-        icon: '/icon-96.png'
+        icon: '/icon-192.png'
       },
       {
         action: 'close',
         title: 'Close',
-        icon: '/icon-96.png'
+        icon: '/icon-192.png'
       }
     ]
   };
@@ -164,7 +187,7 @@ self.addEventListener('push', (event) => {
   );
 });
 
-// Notification click handler
+// Notification click handling
 self.addEventListener('notificationclick', (event) => {
   console.log('Service Worker: Notification clicked');
   
@@ -174,47 +197,5 @@ self.addEventListener('notificationclick', (event) => {
     event.waitUntil(
       clients.openWindow('/')
     );
-  } else if (event.action === 'close') {
-    // Just close the notification
-  } else {
-    // Default action - open the app
-    event.waitUntil(
-      clients.openWindow('/')
-    );
   }
 });
-
-// Helper function for background sync
-async function handleBackgroundSync() {
-  try {
-    // Get pending actions from IndexedDB
-    const pendingActions = await getPendingActions();
-    
-    for (const action of pendingActions) {
-      try {
-        await syncAction(action);
-        await removePendingAction(action.id);
-      } catch (error) {
-        console.error('Background sync failed for action:', action, error);
-      }
-    }
-  } catch (error) {
-    console.error('Background sync error:', error);
-  }
-}
-
-// Helper functions for IndexedDB operations
-async function getPendingActions() {
-  // Implementation would depend on your IndexedDB setup
-  return [];
-}
-
-async function syncAction(action) {
-  // Implementation would depend on your sync logic
-  console.log('Syncing action:', action);
-}
-
-async function removePendingAction(actionId) {
-  // Implementation would depend on your IndexedDB setup
-  console.log('Removing pending action:', actionId);
-}
