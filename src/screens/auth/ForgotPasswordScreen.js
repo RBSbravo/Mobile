@@ -60,9 +60,15 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
   if (success) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right', 'bottom']}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16 }}>
+          <View style={{ 
+            flex: 1, 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            padding: 16,
+            ...(Platform.OS === 'web' && { minHeight: '100vh' })
+          }}>
             <Card style={{ width: '100%', maxWidth: 400, borderRadius: 20, paddingVertical: 20, paddingHorizontal: 0, elevation: 4, backgroundColor: paperTheme.colors.surface }}>
               <View style={{ alignItems: 'center', marginBottom: 18, paddingHorizontal: 18 }}>
                 <Logo />
@@ -100,9 +106,15 @@ const ForgotPasswordScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right', 'bottom']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16 }}>
+        <View style={{ 
+          flex: 1, 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          padding: 16,
+          ...(Platform.OS === 'web' && { minHeight: '100vh' })
+        }}>
           <Card style={{ width: '100%', maxWidth: 400, borderRadius: 20, paddingVertical: 20, paddingHorizontal: 0, elevation: 4, backgroundColor: paperTheme.colors.surface }}>
             <View style={{ alignItems: 'center', marginBottom: 18, paddingHorizontal: 18 }}>
               <Logo />
