@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, useWindowDimensions } from 'react-native';
+import { View, StyleSheet, ScrollView, SafeAreaView, ActivityIndicator, useWindowDimensions, Platform } from 'react-native';
 import { Text, Card, useTheme, Snackbar } from 'react-native-paper';
 import { theme as customTheme, styles as globalStyles } from '../../theme';
 import { useAuth } from '../../context/AuthContext';
@@ -121,13 +121,17 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right', 'bottom']}>
       <ScreenHeader
         leftIcon={<View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: paperTheme.colors.primary, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>{user?.firstname ? user.firstname.charAt(0).toUpperCase() : 'U'}</Text></View>}
         title={`Welcome, ${user?.firstname || 'User'}!`}
         subtitle={"Here's a look at your day."}
       />
-      <View style={[styles.scrollContent, { padding: isTablet ? 32 : 16 }]}>
+      <View style={[
+        styles.scrollContent, 
+        { padding: isTablet ? 32 : 16 },
+        Platform.OS === 'web' && { minHeight: 'calc(100vh - 120px)', paddingTop: 0 }
+      ]}>
         <View style={{ marginVertical: customTheme.spacing.lg, backgroundColor: paperTheme.colors.border, height: 1, width: '100%' }} />
         <View style={{
           backgroundColor: paperTheme.colors.primaryContainer,
