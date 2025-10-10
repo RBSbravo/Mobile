@@ -48,21 +48,22 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={Platform.OS === 'web' ? [] : ['top', 'left', 'right', 'bottom']}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : Platform.OS === 'web' ? undefined : 'height'} style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top', 'left', 'right']}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
         <ScrollView 
-          contentContainerStyle={{ 
-            flexGrow: 1, 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            padding: 16,
-            minHeight: '100vh'
-          }}
+          contentContainerStyle={[
+            { flexGrow: 1, justifyContent: 'center', alignItems: 'center', padding: 16 },
+            Platform.OS === 'web' && { minHeight: '100vh', paddingTop: 40, paddingBottom: 40 }
+          ]}
           keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
         >
-          <Card style={{ width: '100%', maxWidth: 400, borderRadius: 20, paddingVertical: 20, paddingHorizontal: 0, elevation: 4, backgroundColor: paperTheme.colors.surface }}>
+          <Card style={[
+            { width: '100%', maxWidth: 400, borderRadius: 20, paddingVertical: 20, paddingHorizontal: 0, elevation: 4, backgroundColor: paperTheme.colors.surface },
+            Platform.OS === 'web' && { marginVertical: 20 }
+          ]}>
             <View style={{ alignItems: 'center', marginBottom: 18, paddingHorizontal: 18 }}>
-              <Logo />
+            <Logo />
               <Text variant="headlineLarge" style={{ color: paperTheme.colors.primary, fontWeight: 'bold', marginTop: 6, fontSize: 24 }}>Welcome Back</Text>
               <Text variant="bodyLarge" style={{ color: paperTheme.colors.textSecondary, marginTop: 2, fontSize: 14 }}>Sign in to continue</Text>
             </View>
@@ -132,7 +133,7 @@ const LoginScreen = ({ navigation }) => {
               Don't have an account? Register
             </Button>
           </Card>
-          <View style={{ width: '100%', maxWidth: 400, alignSelf: 'center', paddingHorizontal: 18, marginTop: 20 }}>
+          <View style={{ width: '100%', maxWidth: 400, alignSelf: 'center', paddingHorizontal: 18, marginTop: 12 }}>
             <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
               <Text style={{ color: paperTheme.colors.text, marginRight: 8, fontSize: 14 }}>{customTheme.dark ? 'Light Mode' : 'Dark Mode'}</Text>
               <Switch value={customTheme.dark} onValueChange={toggleTheme} color={paperTheme.colors.primary} style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }} />
@@ -163,18 +164,18 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.xxl,
   },
   logoCircle: {
-    width: 80,
-    height: 80,
+    width: 96,
+    height: 96,
     borderRadius: 999,
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
+    marginBottom: theme.spacing.xxl,
     alignSelf: 'center',
   },
   logoImage: {
-    width: 80,
-    height: 80,
+    width: 96,
+    height: 96,
     borderRadius: 999,
     alignItems: 'center',
     justifyContent: 'center',
