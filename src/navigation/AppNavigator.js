@@ -217,15 +217,13 @@ const MainTabs = () => {
   }, [user, refreshUnreadCount]);
 
   return (
-    <Tab.Navigator
-      tabBar={props => <CustomTabBar {...props} />}
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: {
-          display: 'none',
-        },
-      }}
-    >
+    <View style={{ flex: 1 }}>
+      <Tab.Navigator
+        tabBar={props => <CustomTabBar {...props} />}
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
       <Tab.Screen
         name="Home"
         component={HomeStack}
@@ -285,6 +283,7 @@ const MainTabs = () => {
         }}
       />
     </Tab.Navigator>
+    </View>
   );
 };
 
