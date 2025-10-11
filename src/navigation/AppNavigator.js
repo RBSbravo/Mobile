@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Platform, View, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { Platform, View, TouchableOpacity, StyleSheet, Text, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { theme } from '../theme';
@@ -10,6 +10,7 @@ import api from '../services/api';
 import { useThemeContext } from '../context/ThemeContext';
 import { NotificationProvider, useNotification } from '../context/NotificationContext';
 import FullScreenLoader from '../components/FullScreenLoader';
+import NavigationDebugger from '../components/NavigationDebugger';
 
 // Import screens
 import HomeScreen from '../screens/main/HomeScreen';
@@ -222,7 +223,11 @@ const MainTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          display: 'none',
+          display: 'flex',
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
         },
       }}
     >
@@ -292,9 +297,13 @@ const MainTabs = () => {
 const AppNavigator = () => {
   const { isAuthenticated, loading, logoutLoading, loginLoading } = useAuth();
 
-  if (loading) {
-    // You might want to return a loading spinner here
-    return null;
+  // Show loading screen only during initial load, not during login/logout
+  if (loading && !loginLoading && !logoutLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F5F5F5' }}>
+        <ActivityIndicator size="large" color="#2E7D32" />
+      </View>
+    );
   }
 
   return (
@@ -311,6 +320,8 @@ const AppNavigator = () => {
       </Stack.Navigator>
       <FullScreenLoader visible={logoutLoading} message="Logging out..." />
       <FullScreenLoader visible={loginLoading} message="Logging in..." />
+      {/* Debug mode - set to true to see navigation debug info */}
+      <NavigationDebugger visible={__DEV__ && false} />
     </NotificationProvider>
   );
 };
@@ -321,6 +332,16 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? 90 : 70,
     backgroundColor: 'white', // Will be overridden by theme
     borderTopWidth: 1,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   tabItem: {
     flex: 1,

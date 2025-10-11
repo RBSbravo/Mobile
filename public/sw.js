@@ -133,14 +133,34 @@ async function handleNavigationRequest(request) {
     console.log('[SW] Network failed for navigation, serving cached index.html');
   }
 
-  // Fallback to cached index.html
+  // Fallback to cached index.html for all navigation requests
   const cachedResponse = await caches.match('/');
   if (cachedResponse) {
-    return cachedResponse;
+    // Clone the response to avoid consuming it
+    return cachedResponse.clone();
   }
 
-  // Ultimate fallback
-  return new Response('App not available offline', { status: 503 });
+  // Ultimate fallback - return a basic HTML page
+  return new Response(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>MITO Task Manager</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        .error { color: #d32f2f; }
+      </style>
+    </head>
+    <body>
+      <h1>MITO Task Manager</h1>
+      <p class="error">App not available offline. Please check your connection.</p>
+    </body>
+    </html>
+  `, { 
+    status: 503, 
+    headers: { 'Content-Type': 'text/html' } 
+  });
 }
 
 // Cache-first strategy

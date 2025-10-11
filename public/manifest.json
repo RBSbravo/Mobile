@@ -33,6 +33,7 @@
   "theme_color": "#2E7D32",
   "background_color": "#F5F5F5",
   "orientation": "portrait-primary",
+  "display_override": ["window-controls-overlay"],
   "scope": "/",
   "lang": "en",
   "categories": ["productivity", "business", "utilities"],

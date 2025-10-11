@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no" />
   
   <!-- Primary Meta Tags -->
   <title>MITO Task Manager - Professional Task Management System</title>
@@ -167,6 +167,35 @@
     @media (prefers-color-scheme: dark) {
       #loading-screen {
         background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+      }
+    }
+    
+    /* PWA Navigation Bar Fixes */
+    @media (display-mode: standalone) {
+      body {
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      
+      /* Ensure navigation bar is always visible */
+      .tab-bar-container {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 9999 !important;
+        display: flex !important;
+      }
+      
+      /* Prevent content from hiding behind navigation */
+      .main-content {
+        padding-bottom: 80px;
+      }
+    }
+    
+    /* iOS PWA specific fixes */
+    @supports (-webkit-touch-callout: none) {
+      .tab-bar-container {
+        padding-bottom: env(safe-area-inset-bottom);
       }
     }
   </style>
