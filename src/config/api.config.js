@@ -25,20 +25,21 @@ const API_CONFIG = {
 
 // Get current environment
 const getEnvironment = () => {
+  // Check for development environment first
+  if (typeof __DEV__ !== 'undefined' && __DEV__) {
+    return 'development';
+  }
+  
   // Check for production environment
   if (typeof window !== 'undefined' && window.location) {
     const hostname = window.location.hostname;
-    if (hostname.includes('vercel.app') || hostname.includes('railway.app') || hostname === 'localhost') {
+    // For PWA/mobile app, always use production backend
+    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
       return 'production';
     }
   }
   
-  // Check for development environment
-  if (__DEV__) {
-    return 'development';
-  }
-  
-  // Default to production for web builds
+  // Default to production for deployed apps
   return 'production';
 };
 

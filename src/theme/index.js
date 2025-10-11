@@ -103,8 +103,7 @@ export const theme = lightTheme;
 export const styles = {
   container: {
     flex: 1,
-    paddingHorizontal: themeBase.spacing.md,
-    paddingBottom: themeBase.spacing.md,
+    padding: themeBase.spacing.md,
     backgroundColor: colors.background,
   },
   header: {

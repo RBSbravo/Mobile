@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
           try {
             await api.getProfile(storedToken);
           } catch (error) {
+            console.log('Token validation failed, clearing storage:', error.message);
             // Token is invalid, clear storage
             await AsyncStorage.removeItem('user');
             await AsyncStorage.removeItem('token');
@@ -34,6 +35,15 @@ export const AuthProvider = ({ children }) => {
         }
       } catch (e) {
         console.error('Failed to load user from storage', e);
+        // Clear any corrupted storage
+        try {
+          await AsyncStorage.removeItem('user');
+          await AsyncStorage.removeItem('token');
+        } catch (clearError) {
+          console.error('Failed to clear storage:', clearError);
+        }
+        setUser(null);
+        setToken(null);
       } finally {
         setLoading(false);
       }
@@ -45,7 +55,9 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setLoginLoading(true);
     try {
+      console.log('Attempting login for:', email);
       const response = await api.login(email, password);
+      console.log('Login response received:', response);
       const { user: userData, token: authToken } = response;
       
       // Add 2-second delay for better UX
@@ -55,6 +67,7 @@ export const AuthProvider = ({ children }) => {
       await AsyncStorage.setItem('user', JSON.stringify(userData));
       await AsyncStorage.setItem('token', authToken);
       
+      console.log('User data stored, setting state:', userData);
       setUser(userData);
       setToken(authToken);
       

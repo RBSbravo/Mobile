@@ -107,14 +107,17 @@ const NotificationsScreen = () => {
       const fetchedNotifications = await api.getNotifications(token);
       
       // Filter out notifications without proper content
-      const validNotifications = fetchedNotifications.filter(notification => {
+      const validNotifications = (fetchedNotifications || []).filter(notification => {
         const hasContent = notification.title || notification.message;
         return hasContent;
       });
       
       setNotifications(validNotifications.sort((a, b) => new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt)));
     } catch (error) {
+      console.error('Failed to load notifications:', error);
       showError('Failed to load notifications.');
+      // Set empty array to prevent infinite loading
+      setNotifications([]);
     } finally {
       setLoading(false);
     }

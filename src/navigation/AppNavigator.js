@@ -290,12 +290,23 @@ const MainTabs = () => {
 
 // App Navigator
 const AppNavigator = () => {
-  const { isAuthenticated, loading, logoutLoading, loginLoading } = useAuth();
+  const { isAuthenticated, loading, logoutLoading, loginLoading, user, token } = useAuth();
+
+  console.log('AppNavigator render:', {
+    isAuthenticated,
+    loading,
+    logoutLoading,
+    loginLoading,
+    hasUser: !!user,
+    hasToken: !!token
+  });
 
   if (loading) {
-    // You might want to return a loading spinner here
+    console.log('AppNavigator: Still loading, returning null');
     return null;
   }
+
+  console.log('AppNavigator: Rendering navigator, isAuthenticated:', isAuthenticated);
 
   return (
     <NotificationProvider>

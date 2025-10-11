@@ -30,6 +30,19 @@ const HomeScreen = ({ navigation }) => {
     return () => clearTimeout(timeout);
   }, [authLoading]);
 
+  // Add timeout to prevent infinite loading
+  useEffect(() => {
+    const loadingTimeout = setTimeout(() => {
+      if (showSpinner) {
+        console.log('HomeScreen: Loading timeout reached, forcing content display');
+        setShowSpinner(false);
+        setError('Loading timeout. Please refresh the page.');
+      }
+    }, 10000); // 10 second timeout
+
+    return () => clearTimeout(loadingTimeout);
+  }, [showSpinner]);
+
   const fetchData = useCallback(async () => {
     if (!token) return;
     try {
@@ -37,10 +50,14 @@ const HomeScreen = ({ navigation }) => {
         api.getTasks(token),
         api.getNotifications(token)
       ]);
-      setTasks(tasksData.tickets || tasksData.tasks || tasksData); // handle both array and object
-      setNotifications(notificationsData.notifications || notificationsData);
+      setTasks(tasksData.tickets || tasksData.tasks || tasksData || []); // handle both array and object
+      setNotifications(notificationsData.notifications || notificationsData || []);
     } catch (err) {
+      console.error('Failed to load dashboard data:', err);
       setError('Failed to load dashboard data.');
+      // Set empty arrays to prevent infinite loading
+      setTasks([]);
+      setNotifications([]);
     }
   }, [token]);
 
