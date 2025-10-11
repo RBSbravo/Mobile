@@ -38,7 +38,15 @@ const linking = {
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   const { theme } = useThemeContext();
   return (
-    <View style={[styles.tabBarContainer, { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border }]}>
+    <View style={[styles.tabBarContainer, { 
+      backgroundColor: theme.colors.surface, 
+      borderTopColor: theme.colors.border,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: -2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 8,
+    }]}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;
@@ -222,9 +230,16 @@ const MainTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          display: 'none',
+          display: 'flex',
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
         },
+        tabBarHideOnKeyboard: true,
+        lazy: false,
       }}
+      initialRouteName="Home"
     >
       <Tab.Screen
         name="Home"
@@ -293,20 +308,45 @@ const AppNavigator = () => {
   const { isAuthenticated, loading, logoutLoading, loginLoading } = useAuth();
 
   if (loading) {
-    // You might want to return a loading spinner here
-    return null;
+    return <FullScreenLoader visible={true} message="Loading..." />;
   }
 
   return (
     <NotificationProvider>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator 
+        screenOptions={{ 
+          headerShown: false,
+          animation: 'slide_from_right',
+          gestureEnabled: true,
+        }}
+      >
         {isAuthenticated ? (
           <>
-            <Stack.Screen name="Main" component={MainTabs} />
-            <Stack.Screen name="FileViewer" component={FileViewerScreen} options={{ headerShown: true, headerTitle: 'File Viewer' }} />
+            <Stack.Screen 
+              name="Main" 
+              component={MainTabs}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen 
+              name="FileViewer" 
+              component={FileViewerScreen} 
+              options={{ 
+                headerShown: true, 
+                headerTitle: 'File Viewer',
+                presentation: 'modal'
+              }} 
+            />
           </>
         ) : (
-          <Stack.Screen name="Auth" component={AuthStack} />
+          <Stack.Screen 
+            name="Auth" 
+            component={AuthStack}
+            options={{
+              headerShown: false,
+            }}
+          />
         )}
       </Stack.Navigator>
       <FullScreenLoader visible={logoutLoading} message="Logging out..." />

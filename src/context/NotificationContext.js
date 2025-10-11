@@ -44,42 +44,52 @@ export const NotificationProvider = ({ children }) => {
   useEffect(() => {
     if (user?.id && token) {
       const handleNotification = (notif) => {
-        // Ensure the notification has proper structure without duplication
-        let title = notif.title || notif.data?.title || '';
-        let message = notif.message || notif.data?.message || '';
-        
-        // If we have both title and message, use them as is
-        // If we only have one of them, use it for both to avoid duplication
-        if (title && message) {
-          // Both exist, use them as is
-        } else if (title && !message) {
-          // Only title exists, use it for both
-          message = title;
-        } else if (!title && message) {
-          // Only message exists, use it for both
-          title = message;
-        } else {
-          // Neither exists, use fallback
-          title = 'New notification';
-          message = 'You have a new notification';
+        try {
+          // Ensure the notification has proper structure without duplication
+          let title = notif.title || notif.data?.title || '';
+          let message = notif.message || notif.data?.message || '';
+          
+          // If we have both title and message, use them as is
+          // If we only have one of them, use it for both to avoid duplication
+          if (title && message) {
+            // Both exist, use them as is
+          } else if (title && !message) {
+            // Only title exists, use it for both
+            message = title;
+          } else if (!title && message) {
+            // Only message exists, use it for both
+            title = message;
+          } else {
+            // Neither exists, use fallback
+            title = 'New notification';
+            message = 'You have a new notification';
+          }
+          
+          const notification = {
+            id: notif.id || notif.data?.id || Date.now(),
+            title: title,
+            message: message,
+            type: notif.type || notif.data?.type || 'system',
+            isRead: false,
+            date: notif.date || notif.data?.date || new Date().toISOString(),
+            taskId: notif.taskId || notif.data?.taskId,
+            ticketId: notif.ticketId || notif.data?.ticketId
+          };
+          
+          setRealtimeNotifications(prev => [notification, ...prev]);
+          setUnreadCount(prev => prev + 1);
+        } catch (error) {
+          console.error('Error handling notification:', error);
         }
-        
-        const notification = {
-          id: notif.id || notif.data?.id || Date.now(),
-          title: title,
-          message: message,
-          type: notif.type || notif.data?.type || 'system',
-          isRead: false,
-          date: notif.date || notif.data?.date || new Date().toISOString(),
-          taskId: notif.taskId || notif.data?.taskId,
-          ticketId: notif.ticketId || notif.data?.ticketId
-        };
-        
-        setRealtimeNotifications(prev => [notification, ...prev]);
-        setUnreadCount(prev => prev + 1);
       };
-      const socket = connectSocket(token, user.id, handleNotification);
+      
+      // Add a small delay to prevent blocking
+      const timeoutId = setTimeout(() => {
+        const socket = connectSocket(token, user.id, handleNotification);
+      }, 100);
+      
       return () => {
+        clearTimeout(timeoutId);
         disconnectSocket();
       };
     }

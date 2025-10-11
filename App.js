@@ -12,6 +12,7 @@ import { useFonts, Roboto_400Regular, Roboto_500Medium, Roboto_700Bold } from '@
 import * as SplashScreen from 'expo-splash-screen';
 import { NotificationProvider, useNotification } from './src/context/NotificationContext';
 import { MaterialIcons } from '@expo/vector-icons';
+import ErrorBoundary from './src/components/ErrorBoundary';
 
 // Enable screens for better performance
 import { enableScreens } from 'react-native-screens';
@@ -79,7 +80,9 @@ const AppContent = () => {
 
   return (
     <PaperProvider theme={theme}>
-      <AppNavigator />
+      <NavigationContainer linking={linking}>
+        <AppNavigator />
+      </NavigationContainer>
       <GlobalNotificationSnackbar />
       <Snackbar
         visible={!!error}
@@ -130,19 +133,17 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <AppThemeProvider>
-        <SafeAreaProvider>
-          <AuthProvider>
-            <ErrorProvider>
-              <NotificationProvider>
-                <NavigationContainer linking={linking}>
-                  <AppContent />
-                </NavigationContainer>
-              </NotificationProvider>
-            </ErrorProvider>
-          </AuthProvider>
-        </SafeAreaProvider>
-      </AppThemeProvider>
+      <ErrorBoundary>
+        <AppThemeProvider>
+          <SafeAreaProvider>
+            <AuthProvider>
+              <ErrorProvider>
+                <AppContent />
+              </ErrorProvider>
+            </AuthProvider>
+          </SafeAreaProvider>
+        </AppThemeProvider>
+      </ErrorBoundary>
     </GestureHandlerRootView>
   );
 }
