@@ -225,7 +225,7 @@ const TasksScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background, flex: 1 }]} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={RNPlatform.OS === 'ios' ? 'padding' : 'height'}
@@ -236,7 +236,6 @@ const TasksScreen = ({ navigation }) => {
           title="My Tasks"
           subtitle="Manage your tasks here"
         />
-        <ScrollView style={{ flex: 1, paddingBottom: 100 }}>
         <Button
           mode="outlined"
           icon="plus"
@@ -346,7 +345,6 @@ const TasksScreen = ({ navigation }) => {
         >
           {error}
         </Snackbar>
-        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

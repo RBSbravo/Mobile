@@ -82,7 +82,7 @@ const HomeStack = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        animation: Platform.OS === 'web' ? 'none' : 'slide_from_right',
+        animation: 'slide_from_right',
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -111,7 +111,7 @@ const TasksStack = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        animation: Platform.OS === 'web' ? 'none' : 'slide_from_right',
+        animation: 'slide_from_right',
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -140,7 +140,7 @@ const NotificationsStack = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        animation: Platform.OS === 'web' ? 'none' : 'slide_from_right',
+        animation: 'slide_from_right',
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -169,7 +169,7 @@ const ProfileStack = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        animation: Platform.OS === 'web' ? 'none' : 'slide_from_right',
+        animation: 'slide_from_right',
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -222,7 +222,7 @@ const MainTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          display: 'flex',
+          display: 'none',
         },
       }}
     >
@@ -292,15 +292,10 @@ const MainTabs = () => {
 const AppNavigator = () => {
   const { isAuthenticated, loading, logoutLoading, loginLoading } = useAuth();
 
-  // Add debugging
-  console.log('AppNavigator rendering:', { isAuthenticated, loading, logoutLoading, loginLoading });
-
   if (loading) {
-    console.log('AppNavigator: Still loading...');
+    // You might want to return a loading spinner here
     return null;
   }
-
-  console.log('AppNavigator: Rendering main content, isAuthenticated:', isAuthenticated);
 
   return (
     <NotificationProvider>
@@ -326,24 +321,17 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? 90 : 70,
     backgroundColor: 'white', // Will be overridden by theme
     borderTopWidth: 1,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1000,
   },
   tabItem: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 8,
   },
   tabItemContent: {
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
     width: '100%',
-    position: 'relative',
   },
   tabLabel: {
     fontSize: 10,

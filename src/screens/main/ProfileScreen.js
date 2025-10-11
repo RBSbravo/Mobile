@@ -218,12 +218,11 @@ const ProfileScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background, flex: 1 }]} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
         style={{ flex: 1 }}
       >
-        <ScrollView style={{ flex: 1, paddingBottom: 100 }}>
         <Portal>
         <Dialog 
           visible={logoutDialogVisible} 
@@ -464,7 +463,6 @@ const ProfileScreen = ({ navigation }) => {
         >
           {error}
         </Snackbar>
-        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

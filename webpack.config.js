@@ -90,12 +90,5 @@ module.exports = async function (env, argv) {
     path.resolve(__dirname, 'node_modules'),
   ];
 
-  // Ensure proper PWA support
-  config.output = {
-    ...config.output,
-    publicPath: '/',
-    clean: true,
-  };
-
   return config;
 }; 

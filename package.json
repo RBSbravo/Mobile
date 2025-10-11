@@ -14,7 +14,6 @@
     "preview:prod": "npm run build:prod && npx serve dist",
     "analyze": "npm run build:prod && npx webpack-bundle-analyzer dist/_expo/static/js/web/*.js",
     "test:pwa": "npm run build:prod && npx lighthouse dist/index.html --view",
-    "test:pwa-setup": "node test-pwa.js",
     "clear": "expo start --clear",
     "clean": "rm -rf node_modules && npm install",
     "clean:build": "rm -rf dist && npm run build:prod"

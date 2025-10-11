@@ -50,7 +50,7 @@
       "name": "Dashboard",
       "short_name": "Dashboard",
       "description": "View your dashboard",
-      "url": "/",
+      "url": "/dashboard",
       "icons": [
         {
           "src": "/icon-192.png",
@@ -63,6 +63,18 @@
       "short_name": "Tasks",
       "description": "Manage your tasks",
       "url": "/tasks",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Tickets",
+      "short_name": "Tickets",
+      "description": "View support tickets",
+      "url": "/tickets",
       "icons": [
         {
           "src": "/icon-192.png",

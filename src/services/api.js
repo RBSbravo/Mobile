@@ -33,14 +33,7 @@ const storeOfflineAction = async (action) => {
       retryCount: 0
     };
     existingActions.push(newAction);
-    
-    // Use AsyncStorage for React Native, localStorage for web
-    if (Platform.OS === 'web') {
-      localStorage.setItem(OFFLINE_STORAGE_KEY, JSON.stringify(existingActions));
-    } else {
-      const AsyncStorage = require('@react-native-async-storage/async-storage').default;
-      await AsyncStorage.setItem(OFFLINE_STORAGE_KEY, JSON.stringify(existingActions));
-    }
+    localStorage.setItem(OFFLINE_STORAGE_KEY, JSON.stringify(existingActions));
     return newAction;
   } catch (error) {
     console.error('Failed to store offline action:', error);
@@ -50,14 +43,7 @@ const storeOfflineAction = async (action) => {
 // Helper function to get offline actions
 const getOfflineActions = async () => {
   try {
-    let actions;
-    // Use AsyncStorage for React Native, localStorage for web
-    if (Platform.OS === 'web') {
-      actions = localStorage.getItem(OFFLINE_STORAGE_KEY);
-    } else {
-      const AsyncStorage = require('@react-native-async-storage/async-storage').default;
-      actions = await AsyncStorage.getItem(OFFLINE_STORAGE_KEY);
-    }
+    const actions = localStorage.getItem(OFFLINE_STORAGE_KEY);
     return actions ? JSON.parse(actions) : [];
   } catch (error) {
     console.error('Failed to get offline actions:', error);
@@ -70,14 +56,7 @@ const removeOfflineAction = async (actionId) => {
   try {
     const actions = await getOfflineActions();
     const filteredActions = actions.filter(action => action.id !== actionId);
-    
-    // Use AsyncStorage for React Native, localStorage for web
-    if (Platform.OS === 'web') {
-      localStorage.setItem(OFFLINE_STORAGE_KEY, JSON.stringify(filteredActions));
-    } else {
-      const AsyncStorage = require('@react-native-async-storage/async-storage').default;
-      await AsyncStorage.setItem(OFFLINE_STORAGE_KEY, JSON.stringify(filteredActions));
-    }
+    localStorage.setItem(OFFLINE_STORAGE_KEY, JSON.stringify(filteredActions));
   } catch (error) {
     console.error('Failed to remove offline action:', error);
   }
