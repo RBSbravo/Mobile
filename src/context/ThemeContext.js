@@ -7,35 +7,16 @@ export const ThemeContext = createContext({
 });
 
 export const ThemeProvider = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Check for saved theme preference
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const savedTheme = localStorage.getItem('mito-theme');
-      if (savedTheme) {
-        return savedTheme === 'dark';
-      }
-    }
-    // Default to system preference
-    if (typeof window !== 'undefined' && window.matchMedia) {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }
-    return false;
-  });
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const toggleTheme = () => {
-    const newTheme = !isDarkMode;
-    setIsDarkMode(newTheme);
-    
-    // Save theme preference
-    if (typeof window !== 'undefined' && window.localStorage) {
-      localStorage.setItem('mito-theme', newTheme ? 'dark' : 'light');
-    }
+    setIsDarkMode(!isDarkMode);
   };
 
   const theme = useMemo(() => (isDarkMode ? darkTheme : lightTheme), [isDarkMode]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, dark: isDarkMode }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

@@ -12,7 +12,6 @@ import { useFonts, Roboto_400Regular, Roboto_500Medium, Roboto_700Bold } from '@
 import * as SplashScreen from 'expo-splash-screen';
 import { NotificationProvider, useNotification } from './src/context/NotificationContext';
 import { MaterialIcons } from '@expo/vector-icons';
-import NavigationTester from './src/utils/navigationTester';
 
 // Enable screens for better performance
 import { enableScreens } from 'react-native-screens';
