@@ -121,7 +121,7 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right', 'bottom']}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
         style={{ flex: 1 }}
@@ -132,7 +132,7 @@ const HomeScreen = ({ navigation }) => {
           subtitle={"Here's a look at your day."}
         />
         <ScrollView 
-          contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16, paddingBottom: 100 }]}
+          contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16 }]}
           showsVerticalScrollIndicator={false}
           bounces={false}
         >
