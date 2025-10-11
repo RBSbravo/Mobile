@@ -37,7 +37,6 @@ const linking = {
 // Custom tab bar component
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   const { theme } = useThemeContext();
-  
   return (
     <View style={[styles.tabBarContainer, { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border }]}>
       {state.routes.map((route, index) => {
@@ -84,7 +83,6 @@ const HomeStack = () => {
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
-        animationEnabled: false, // Disable animations for web
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -114,7 +112,6 @@ const TasksStack = () => {
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
-        animationEnabled: false, // Disable animations for web
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -144,7 +141,6 @@ const NotificationsStack = () => {
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
-        animationEnabled: false, // Disable animations for web
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -174,7 +170,6 @@ const ProfileStack = () => {
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
-        animationEnabled: false, // Disable animations for web
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -206,7 +201,6 @@ const AuthStack = () => (
 const MainTabs = () => {
   const { user } = useAuth();
   const { unreadCount, refreshUnreadCount } = useNotification();
-  const { theme } = useThemeContext();
 
   useEffect(() => {
     const fetchCount = async () => {
@@ -228,10 +222,7 @@ const MainTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
+          display: 'none',
         },
       }}
     >
@@ -308,22 +299,14 @@ const AppNavigator = () => {
 
   return (
     <NotificationProvider>
-      <Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isAuthenticated ? (
           <>
-            <Stack.Screen 
-              name="Main" 
-              component={MainTabs}
-              options={{ headerShown: false }}
-            />
+            <Stack.Screen name="Main" component={MainTabs} />
             <Stack.Screen name="FileViewer" component={FileViewerScreen} options={{ headerShown: true, headerTitle: 'File Viewer' }} />
           </>
         ) : (
-          <Stack.Screen 
-            name="Auth" 
-            component={AuthStack}
-            options={{ headerShown: false }}
-          />
+          <Stack.Screen name="Auth" component={AuthStack} />
         )}
       </Stack.Navigator>
       <FullScreenLoader visible={logoutLoading} message="Logging out..." />
@@ -352,7 +335,8 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     fontSize: 10,
-    marginTop: 4,
+    fontFamily: theme.typography.fontFamily.medium,
+    marginTop: theme.spacing.xs,
   },
   indicator: {
     position: 'absolute',
