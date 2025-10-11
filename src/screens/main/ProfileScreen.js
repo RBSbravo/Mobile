@@ -421,7 +421,7 @@ const ProfileScreen = ({ navigation }) => {
         </View>
       </View>
       <ScrollView
-        contentContainerStyle={[styles.scrollContent, { paddingBottom: Platform.OS === 'ios' ? 110 : 90 }]}
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         bounces={false}
       >

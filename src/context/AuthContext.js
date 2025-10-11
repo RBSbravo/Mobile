@@ -13,12 +13,9 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const loadUserFromStorage = async () => {
-      console.log('AuthContext: Starting to load user from storage');
       try {
         const storedUser = await AsyncStorage.getItem('user');
         const storedToken = await AsyncStorage.getItem('token');
-        
-        console.log('AuthContext: Storage check', { hasUser: !!storedUser, hasToken: !!storedToken });
         
         if (storedUser && storedToken) {
           setUser(JSON.parse(storedUser));
@@ -26,37 +23,23 @@ export const AuthProvider = ({ children }) => {
           
           // Validate token with backend
           try {
-            console.log('AuthContext: Validating token with backend');
             await api.getProfile(storedToken);
-            console.log('AuthContext: Token validation successful');
           } catch (error) {
-            console.log('AuthContext: Token validation failed, clearing storage');
             // Token is invalid, clear storage
             await AsyncStorage.removeItem('user');
             await AsyncStorage.removeItem('token');
             setUser(null);
             setToken(null);
           }
-        } else {
-          console.log('AuthContext: No stored credentials found');
         }
       } catch (e) {
-        console.error('AuthContext: Failed to load user from storage', e);
+        console.error('Failed to load user from storage', e);
       } finally {
-        console.log('AuthContext: Setting loading to false');
         setLoading(false);
       }
     };
 
-    // Add a timeout to prevent infinite loading
-    const timeoutId = setTimeout(() => {
-      console.log('AuthContext: Loading timeout reached, forcing loading to false');
-      setLoading(false);
-    }, 10000); // 10 second timeout
-
-    loadUserFromStorage().finally(() => {
-      clearTimeout(timeoutId);
-    });
+    loadUserFromStorage();
   }, []);
 
   const login = async (email, password) => {

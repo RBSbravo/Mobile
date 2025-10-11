@@ -291,7 +291,6 @@ const TaskDetailScreen = ({ route }) => {
       >
         <ScrollView 
           style={[styles.container, { backgroundColor: paperTheme.colors.background }]}
-          contentContainerStyle={{ paddingBottom: Platform.OS === 'ios' ? 110 : 90 }}
           showsVerticalScrollIndicator={false}
         >
       <Card 
