@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Platform, View, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { Platform, View, TouchableOpacity, StyleSheet, Text, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { theme } from '../theme';
@@ -38,14 +38,14 @@ const linking = {
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   const { theme } = useThemeContext();
   return (
-    <View style={[styles.tabBarContainer, { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border }]}>
+    <View style={[styles.tabBarContainer, { backgroundColor: theme?.colors?.surface || '#FFFFFF', borderTopColor: theme?.colors?.border || '#E0E0E0' }]}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;
 
         const icon = options.tabBarIcon({ 
           focused: isFocused, 
-          color: isFocused ? theme.colors.primary : theme.colors.textSecondary,
+          color: isFocused ? (theme?.colors?.primary || '#2E7D32') : (theme?.colors?.textSecondary || '#757575'),
           size: 24 
         });
 
@@ -62,11 +62,11 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
               {icon}
               <Text style={[
                 styles.tabLabel,
-                { color: isFocused ? theme.colors.primary : theme.colors.textSecondary }
+                { color: isFocused ? (theme?.colors?.primary || '#2E7D32') : (theme?.colors?.textSecondary || '#757575') }
               ]}>
                 {label}
               </Text>
-              {isFocused && <View style={[styles.indicator, { backgroundColor: theme.colors.primary }]} />}
+              {isFocused && <View style={[styles.indicator, { backgroundColor: theme?.colors?.primary || '#2E7D32' }]} />}
             </View>
           </TouchableOpacity>
         );
@@ -84,11 +84,11 @@ const HomeStack = () => {
         headerShown: false,
         animation: 'slide_from_right',
         headerStyle: {
-          backgroundColor: theme.colors.background,
+          backgroundColor: theme?.colors?.background || '#F5F5F5',
         },
-        headerTintColor: theme.colors.primary,
+        headerTintColor: theme?.colors?.primary || '#2E7D32',
         headerTitleStyle: {
-          color: theme.colors.text,
+          color: theme?.colors?.text || '#212121',
         }
       }}
     >
@@ -113,11 +113,11 @@ const TasksStack = () => {
         headerShown: false,
         animation: 'slide_from_right',
         headerStyle: {
-          backgroundColor: theme.colors.background,
+          backgroundColor: theme?.colors?.background || '#F5F5F5',
         },
-        headerTintColor: theme.colors.primary,
+        headerTintColor: theme?.colors?.primary || '#2E7D32',
         headerTitleStyle: {
-          color: theme.colors.text,
+          color: theme?.colors?.text || '#212121',
         }
       }}
     >
@@ -142,11 +142,11 @@ const NotificationsStack = () => {
         headerShown: false,
         animation: 'slide_from_right',
         headerStyle: {
-          backgroundColor: theme.colors.background,
+          backgroundColor: theme?.colors?.background || '#F5F5F5',
         },
-        headerTintColor: theme.colors.primary,
+        headerTintColor: theme?.colors?.primary || '#2E7D32',
         headerTitleStyle: {
-          color: theme.colors.text,
+          color: theme?.colors?.text || '#212121',
         }
       }}
     >
@@ -171,11 +171,11 @@ const ProfileStack = () => {
         headerShown: false,
         animation: 'slide_from_right',
         headerStyle: {
-          backgroundColor: theme.colors.background,
+          backgroundColor: theme?.colors?.background || '#F5F5F5',
         },
-        headerTintColor: theme.colors.primary,
+        headerTintColor: theme?.colors?.primary || '#2E7D32',
         headerTitleStyle: {
-          color: theme.colors.text,
+          color: theme?.colors?.text || '#212121',
         }
       }}
     >
@@ -210,10 +210,19 @@ const MainTabs = () => {
           refreshUnreadCount(count);
         } catch (error) {
           console.error("Failed to fetch unread count:", error);
+          // Don't let this error break the app
         }
       }
     };
-    fetchCount();
+    
+    // Add a timeout to prevent hanging
+    const timeoutId = setTimeout(() => {
+      console.log("Notification count fetch timeout");
+    }, 5000);
+    
+    fetchCount().finally(() => {
+      clearTimeout(timeoutId);
+    });
   }, [user, refreshUnreadCount]);
 
   return (
@@ -293,11 +302,31 @@ const MainTabs = () => {
 // App Navigator
 const AppNavigator = () => {
   const { isAuthenticated, loading, logoutLoading, loginLoading } = useAuth();
+  const [forceRender, setForceRender] = useState(false);
 
-  if (loading) {
-    // You might want to return a loading spinner here
-    return null;
+  console.log('AppNavigator render:', { isAuthenticated, loading, logoutLoading, loginLoading });
+
+  // Add a fallback timeout to prevent infinite loading
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      console.log('AppNavigator: Force render timeout reached');
+      setForceRender(true);
+    }, 15000); // 15 second timeout
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  if (loading && !forceRender) {
+    console.log('AppNavigator: Showing loading screen');
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F5F5F5' }}>
+        <ActivityIndicator size="large" color="#2E7D32" />
+        <Text style={{ marginTop: 16, color: '#666' }}>Loading...</Text>
+      </View>
+    );
   }
+
+  console.log('AppNavigator: Loading complete, showing main app');
 
   return (
     <NotificationProvider>
