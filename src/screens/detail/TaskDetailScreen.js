@@ -285,7 +285,7 @@ const TaskDetailScreen = ({ route }) => {
   }
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
+    <View style={[styles.container, { backgroundColor: paperTheme.colors.background }]}>
       <ScrollView 
         style={{ flex: 1 }}
         contentContainerStyle={{ paddingBottom: 100 }}
@@ -667,7 +667,7 @@ const TaskDetailScreen = ({ route }) => {
         </Modal>
       </Portal>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
