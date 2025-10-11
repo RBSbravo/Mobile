@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, ActivityIndicator, Platform, Linking, Image, Dimensions, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Card, ProgressBar, Button, Chip, TextInput, Caption, Title, useTheme } from 'react-native-paper';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
@@ -285,12 +284,10 @@ const TaskDetailScreen = ({ route }) => {
   }
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top']}>
-      <ScrollView 
-        style={{ flex: 1 }}
-        contentContainerStyle={{ paddingBottom: 100 }}
-        showsVerticalScrollIndicator={false}
-      >
+    <ScrollView 
+      style={[styles.container, { backgroundColor: paperTheme.colors.background }]}
+      showsVerticalScrollIndicator={false}
+    >
       <Card 
         style={[styles.card, { backgroundColor: paperTheme.colors.surface, ...(paperTheme.dark && { borderColor: paperTheme.colors.border, borderWidth: 1 }) }]}
         mode="elevated"
@@ -666,8 +663,7 @@ const TaskDetailScreen = ({ route }) => {
           </View>
         </Modal>
       </Portal>
-      </ScrollView>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 

@@ -248,7 +248,7 @@ const NotificationsScreen = () => {
   };
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top']}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
       <ScreenHeader
         leftIcon={<MaterialIcons name="notifications" size={28} color={paperTheme.colors.primary} />}
         title="Notifications"
@@ -295,7 +295,7 @@ const NotificationsScreen = () => {
           refreshing={loading}
           onRefresh={fetchNotifications}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: isTablet ? 32 : 12, paddingBottom: 100 }}
+          contentContainerStyle={{ paddingHorizontal: isTablet ? 32 : 12, paddingBottom: isTablet ? 32 : 16 }}
         />
       )}
     </SafeAreaView>
