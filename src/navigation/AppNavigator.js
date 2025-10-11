@@ -37,6 +37,10 @@ const linking = {
 // Custom tab bar component
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   const { theme } = useThemeContext();
+  
+  // Debug logging
+  console.log('CustomTabBar rendering with state:', state);
+  
   return (
     <View style={[styles.tabBarContainer, { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border }]}>
       {state.routes.map((route, index) => {
@@ -201,6 +205,10 @@ const AuthStack = () => (
 const MainTabs = () => {
   const { user } = useAuth();
   const { unreadCount, refreshUnreadCount } = useNotification();
+  const { theme } = useThemeContext();
+
+  // Debug logging
+  console.log('MainTabs rendering with user:', user?.email);
 
   useEffect(() => {
     const fetchCount = async () => {
@@ -221,9 +229,6 @@ const MainTabs = () => {
       tabBar={props => <CustomTabBar {...props} />}
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {
-          display: 'none',
-        },
       }}
     >
       <Tab.Screen
@@ -302,11 +307,19 @@ const AppNavigator = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isAuthenticated ? (
           <>
-            <Stack.Screen name="Main" component={MainTabs} />
+            <Stack.Screen 
+              name="Main" 
+              component={MainTabs}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen name="FileViewer" component={FileViewerScreen} options={{ headerShown: true, headerTitle: 'File Viewer' }} />
           </>
         ) : (
-          <Stack.Screen name="Auth" component={AuthStack} />
+          <Stack.Screen 
+            name="Auth" 
+            component={AuthStack}
+            options={{ headerShown: false }}
+          />
         )}
       </Stack.Navigator>
       <FullScreenLoader visible={logoutLoading} message="Logging out..." />
@@ -335,8 +348,7 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     fontSize: 10,
-    fontFamily: theme.typography.fontFamily.medium,
-    marginTop: theme.spacing.xs,
+    marginTop: 4,
   },
   indicator: {
     position: 'absolute',
