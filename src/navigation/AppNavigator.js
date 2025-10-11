@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Platform } from 'react-native';
+import { Platform, View, Text } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { theme } from '../theme';
 import { useAuth } from '../context/AuthContext';
@@ -160,6 +160,7 @@ const AuthStack = () => (
 const MainTabs = () => {
   const { user } = useAuth();
   const { unreadCount, refreshUnreadCount } = useNotification();
+  const { theme } = useThemeContext();
 
   useEffect(() => {
     const fetchCount = async () => {
@@ -180,15 +181,16 @@ const MainTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#ffffff',
+          backgroundColor: theme.colors.surface,
           borderTopWidth: 1,
-          borderTopColor: '#e0e0e0',
-          height: 70,
+          borderTopColor: theme.colors.border,
+          height: Platform.OS === 'ios' ? 90 : 70,
         },
-        tabBarActiveTintColor: '#2E7D32',
-        tabBarInactiveTintColor: '#757575',
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.textSecondary,
         tabBarLabelStyle: {
           fontSize: 10,
+          fontFamily: theme.typography.fontFamily.medium,
         },
       }}
     >
