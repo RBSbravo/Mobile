@@ -82,7 +82,7 @@ const HomeStack = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        animation: 'slide_from_right',
+        animation: Platform.OS === 'web' ? 'none' : 'slide_from_right',
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -111,7 +111,7 @@ const TasksStack = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        animation: 'slide_from_right',
+        animation: Platform.OS === 'web' ? 'none' : 'slide_from_right',
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -140,7 +140,7 @@ const NotificationsStack = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        animation: 'slide_from_right',
+        animation: Platform.OS === 'web' ? 'none' : 'slide_from_right',
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -169,7 +169,7 @@ const ProfileStack = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        animation: 'slide_from_right',
+        animation: Platform.OS === 'web' ? 'none' : 'slide_from_right',
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -292,10 +292,15 @@ const MainTabs = () => {
 const AppNavigator = () => {
   const { isAuthenticated, loading, logoutLoading, loginLoading } = useAuth();
 
+  // Add debugging
+  console.log('AppNavigator rendering:', { isAuthenticated, loading, logoutLoading, loginLoading });
+
   if (loading) {
-    // You might want to return a loading spinner here
+    console.log('AppNavigator: Still loading...');
     return null;
   }
+
+  console.log('AppNavigator: Rendering main content, isAuthenticated:', isAuthenticated);
 
   return (
     <NotificationProvider>
