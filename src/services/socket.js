@@ -5,11 +5,6 @@ let socket;
 let eventCallbacks = {};
 
 export const connectSocket = (token, userId, onNotification) => {
-  // Disconnect existing socket if any
-  if (socket) {
-    socket.disconnect();
-  }
-
   // Use http protocol for socket connection (Socket.IO handles the upgrade)
   let socketUrl = config.BACKEND_API_URL.replace(/\/api$/, '');
   
@@ -18,24 +13,21 @@ export const connectSocket = (token, userId, onNotification) => {
     reconnection: true,
     reconnectionAttempts: 5,
     reconnectionDelay: 1000,
-    transports: ['websocket', 'polling'],
-    timeout: 5000,
-    forceNew: true
+    transports: ['websocket', 'polling']
   });
 
   socket.on('connect', () => {
-    console.log('Socket connected');
     if (userId) {
       socket.emit('join', userId);
     }
   });
 
   socket.on('disconnect', (reason) => {
-    console.log('Socket disconnected:', reason);
+    // Socket disconnected
   });
 
   socket.on('connect_error', (error) => {
-    console.log('Socket connection error:', error);
+    // Socket connection error
   });
 
   socket.on('notification', (payload) => {
@@ -100,12 +92,20 @@ export const connectSocket = (token, userId, onNotification) => {
     }
   });
 
+  socket.on('disconnect', (reason) => {
+    // Socket disconnected
+  });
+
+  socket.on('connect_error', (err) => {
+    // Socket connection error
+  });
+
   socket.on('reconnect', (attemptNumber) => {
-    console.log('Socket reconnected after', attemptNumber, 'attempts');
+    // Socket reconnected
   });
 
   socket.on('reconnect_error', (err) => {
-    console.log('Socket reconnection error:', err);
+    // Socket reconnection error
   });
 
   return socket;

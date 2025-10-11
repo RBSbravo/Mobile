@@ -8,6 +8,7 @@ import { theme } from '../theme';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import { useThemeContext } from '../context/ThemeContext';
+import { NotificationProvider, useNotification } from '../context/NotificationContext';
 import FullScreenLoader from '../components/FullScreenLoader';
 
 // Import screens
@@ -37,15 +38,7 @@ const linking = {
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   const { theme } = useThemeContext();
   return (
-    <View style={[styles.tabBarContainer, { 
-      backgroundColor: theme.colors.surface, 
-      borderTopColor: theme.colors.border,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: -2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 8,
-    }]}>
+    <View style={[styles.tabBarContainer, { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border }]}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;
@@ -207,6 +200,21 @@ const AuthStack = () => (
 // Main Tab Navigator
 const MainTabs = () => {
   const { user } = useAuth();
+  const { unreadCount, refreshUnreadCount } = useNotification();
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      if (user?.id) {
+        try {
+          const count = await api.getUnreadNotificationCount(user.id);
+          refreshUnreadCount(count);
+        } catch (error) {
+          console.error("Failed to fetch unread count:", error);
+        }
+      }
+    };
+    fetchCount();
+  }, [user, refreshUnreadCount]);
 
   return (
     <Tab.Navigator
@@ -214,16 +222,9 @@ const MainTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          display: 'flex',
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
+          display: 'none',
         },
-        tabBarHideOnKeyboard: true,
-        lazy: false,
       }}
-      initialRouteName="Home"
     >
       <Tab.Screen
         name="Home"
@@ -251,7 +252,25 @@ const MainTabs = () => {
         options={{
           tabBarLabel: 'Notifications',
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="notifications" size={size} color={color} />
+            <View>
+              <MaterialIcons name="notifications" size={size} color={color} />
+              {unreadCount > 0 && (
+                <View style={{
+                  position: 'absolute',
+                  top: -4,
+                  right: -4,
+                  backgroundColor: theme.colors.error,
+                  borderRadius: 8,
+                  minWidth: 16,
+                  height: 16,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  paddingHorizontal: 2,
+                }}>
+                  <Text style={{ color: '#fff', fontSize: 10, fontWeight: 'bold' }}>{unreadCount}</Text>
+                </View>
+              )}
+            </View>
           ),
         }}
       />
@@ -274,50 +293,25 @@ const AppNavigator = () => {
   const { isAuthenticated, loading, logoutLoading, loginLoading } = useAuth();
 
   if (loading) {
-    return <FullScreenLoader visible={true} message="Loading..." />;
+    // You might want to return a loading spinner here
+    return null;
   }
 
   return (
-    <>
-      <Stack.Navigator 
-        screenOptions={{ 
-          headerShown: false,
-          animation: 'slide_from_right',
-          gestureEnabled: true,
-        }}
-      >
+    <NotificationProvider>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isAuthenticated ? (
           <>
-            <Stack.Screen 
-              name="Main" 
-              component={MainTabs}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen 
-              name="FileViewer" 
-              component={FileViewerScreen} 
-              options={{ 
-                headerShown: true, 
-                headerTitle: 'File Viewer',
-                presentation: 'modal'
-              }} 
-            />
+            <Stack.Screen name="Main" component={MainTabs} />
+            <Stack.Screen name="FileViewer" component={FileViewerScreen} options={{ headerShown: true, headerTitle: 'File Viewer' }} />
           </>
         ) : (
-          <Stack.Screen 
-            name="Auth" 
-            component={AuthStack}
-            options={{
-              headerShown: false,
-            }}
-          />
+          <Stack.Screen name="Auth" component={AuthStack} />
         )}
       </Stack.Navigator>
       <FullScreenLoader visible={logoutLoading} message="Logging out..." />
       <FullScreenLoader visible={loginLoading} message="Logging in..." />
-    </>
+    </NotificationProvider>
   );
 };
 

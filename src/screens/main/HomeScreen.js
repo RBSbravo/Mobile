@@ -8,7 +8,6 @@ import api from '../../services/api';
 import ScreenHeader from '../../components/ScreenHeader';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRealtimeUpdates } from '../../hooks/useRealtimeUpdates';
-import DebugPanel from '../../components/DebugPanel';
 
 const HomeScreen = ({ navigation }) => {
   const paperTheme = useTheme();
@@ -17,7 +16,6 @@ const HomeScreen = ({ navigation }) => {
   const [error, setError] = useState("");
   const [tasks, setTasks] = useState([]);
   const [notifications, setNotifications] = useState([]);
-  const [showDebugPanel, setShowDebugPanel] = useState(false);
   const { width } = useWindowDimensions();
   const isTablet = width >= 768;
   const { setupTaskUpdates, setupPerformanceUpdates, cleanupListeners } = useRealtimeUpdates();
@@ -123,7 +121,7 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top']}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
         style={{ flex: 1 }}
@@ -132,15 +130,6 @@ const HomeScreen = ({ navigation }) => {
           leftIcon={<View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: paperTheme.colors.primary, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>{user?.firstname ? user.firstname.charAt(0).toUpperCase() : 'U'}</Text></View>}
           title={`Welcome, ${user?.firstname || 'User'}!`}
           subtitle={"Here's a look at your day."}
-          rightAction={
-            <MaterialIcons 
-              name="bug-report" 
-              size={24} 
-              color={paperTheme.colors.primary} 
-              onPress={() => setShowDebugPanel(true)}
-              style={{ padding: 8 }}
-            />
-          }
         />
         <ScrollView 
           contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16 }]}
@@ -196,10 +185,6 @@ const HomeScreen = ({ navigation }) => {
         >
           {error}
         </Snackbar>
-        <DebugPanel 
-          visible={showDebugPanel} 
-          onClose={() => setShowDebugPanel(false)} 
-        />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
