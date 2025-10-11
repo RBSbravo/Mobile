@@ -38,9 +38,6 @@ const linking = {
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   const { theme } = useThemeContext();
   
-  // Debug logging
-  console.log('CustomTabBar rendering with state:', state);
-  
   return (
     <View style={[styles.tabBarContainer, { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border }]}>
       {state.routes.map((route, index) => {
@@ -87,6 +84,7 @@ const HomeStack = () => {
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
+        animationEnabled: false, // Disable animations for web
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -116,6 +114,7 @@ const TasksStack = () => {
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
+        animationEnabled: false, // Disable animations for web
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -145,6 +144,7 @@ const NotificationsStack = () => {
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
+        animationEnabled: false, // Disable animations for web
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -174,6 +174,7 @@ const ProfileStack = () => {
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
+        animationEnabled: false, // Disable animations for web
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
@@ -206,9 +207,6 @@ const MainTabs = () => {
   const { user } = useAuth();
   const { unreadCount, refreshUnreadCount } = useNotification();
   const { theme } = useThemeContext();
-
-  // Debug logging
-  console.log('MainTabs rendering with user:', user?.email);
 
   useEffect(() => {
     const fetchCount = async () => {
@@ -304,7 +302,7 @@ const AppNavigator = () => {
 
   return (
     <NotificationProvider>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
         {isAuthenticated ? (
           <>
             <Stack.Screen 
