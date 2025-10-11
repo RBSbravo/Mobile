@@ -217,15 +217,16 @@ const MainTabs = () => {
   }, [user, refreshUnreadCount]);
 
   return (
-    <Tab.Navigator
-      tabBar={props => <CustomTabBar {...props} />}
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: {
-          display: 'none',
-        },
-      }}
-    >
+    <View style={{ flex: 1 }}>
+      <Tab.Navigator
+        tabBar={props => <CustomTabBar {...props} />}
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: {
+            display: 'none',
+          },
+        }}
+      >
       <Tab.Screen
         name="Home"
         component={HomeStack}
@@ -284,7 +285,8 @@ const MainTabs = () => {
           ),
         }}
       />
-    </Tab.Navigator>
+      </Tab.Navigator>
+    </View>
   );
 };
 
@@ -321,6 +323,16 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? 90 : 70,
     backgroundColor: 'white', // Will be overridden by theme
     borderTopWidth: 1,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   tabItem: {
     flex: 1,
