@@ -20,6 +20,15 @@ const HomeScreen = ({ navigation }) => {
   const isTablet = width >= 768;
   const { setupTaskUpdates, setupPerformanceUpdates, cleanupListeners } = useRealtimeUpdates();
 
+  console.log('HomeScreen render:', {
+    hasUser: !!user,
+    hasToken: !!token,
+    authLoading,
+    showSpinner,
+    tasksCount: tasks.length,
+    notificationsCount: notifications.length
+  });
+
   useEffect(() => {
     let timeout;
     if (authLoading) {
@@ -44,16 +53,24 @@ const HomeScreen = ({ navigation }) => {
   }, [showSpinner]);
 
   const fetchData = useCallback(async () => {
-    if (!token) return;
+    if (!token) {
+      console.log('HomeScreen: No token available, skipping data fetch');
+      return;
+    }
+    console.log('HomeScreen: Starting data fetch with token:', token.substring(0, 20) + '...');
     try {
       const [tasksData, notificationsData] = await Promise.all([
         api.getTasks(token),
         api.getNotifications(token)
       ]);
+      console.log('HomeScreen: Data fetched successfully:', {
+        tasksData,
+        notificationsData
+      });
       setTasks(tasksData.tickets || tasksData.tasks || tasksData || []); // handle both array and object
       setNotifications(notificationsData.notifications || notificationsData || []);
     } catch (err) {
-      console.error('Failed to load dashboard data:', err);
+      console.error('HomeScreen: Failed to load dashboard data:', err);
       setError('Failed to load dashboard data.');
       // Set empty arrays to prevent infinite loading
       setTasks([]);
@@ -112,12 +129,16 @@ const HomeScreen = ({ navigation }) => {
   }).length;
 
   if (showSpinner) {
+    console.log('HomeScreen: Showing spinner');
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: paperTheme.colors.background }}>
         <ActivityIndicator size="large" color={paperTheme.colors.primary} />
+        <Text style={{ marginTop: 16, color: paperTheme.colors.text }}>Loading dashboard...</Text>
       </View>
     );
   }
+
+  console.log('HomeScreen: Rendering main content');
 
   const StatCard = ({ icon, label, value }) => (
     <Card 
