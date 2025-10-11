@@ -295,7 +295,7 @@ const NotificationsScreen = () => {
           refreshing={loading}
           onRefresh={fetchNotifications}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: isTablet ? 32 : 12, paddingBottom: isTablet ? 32 : 16 }}
+          contentContainerStyle={{ paddingHorizontal: isTablet ? 32 : 12, paddingBottom: 100 }}
         />
       )}
     </SafeAreaView>

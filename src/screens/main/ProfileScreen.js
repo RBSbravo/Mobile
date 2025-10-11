@@ -417,7 +417,8 @@ const ProfileScreen = ({ navigation }) => {
         </View>
       </View>
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        style={{ flex: 1 }}
+        contentContainerStyle={[styles.scrollContent, { paddingBottom: 100 }]}
         showsVerticalScrollIndicator={false}
         bounces={false}
       >

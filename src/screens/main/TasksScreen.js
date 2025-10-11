@@ -271,7 +271,7 @@ const TasksScreen = ({ navigation }) => {
           keyExtractor={item => item.id}
           contentContainerStyle={[
             styles.listContent,
-            { padding: isTablet ? 32 : 16, paddingTop: 8 }
+            { padding: isTablet ? 32 : 16, paddingTop: 8, paddingBottom: 100 }
           ]}
           ListEmptyComponent={renderEmptyComponent}
           refreshControl={
