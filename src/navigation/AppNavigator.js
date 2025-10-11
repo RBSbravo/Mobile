@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Platform, View, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { theme } from '../theme';
@@ -38,40 +39,42 @@ const linking = {
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   const { theme } = useThemeContext();
   return (
-    <View style={[styles.tabBarContainer, { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border }]}>
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const isFocused = state.index === index;
+    <SafeAreaView style={{ backgroundColor: theme.colors.surface }} edges={['bottom']}>
+      <View style={[styles.tabBarContainer, { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border }]}>
+        {state.routes.map((route, index) => {
+          const { options } = descriptors[route.key];
+          const isFocused = state.index === index;
 
-        const icon = options.tabBarIcon({ 
-          focused: isFocused, 
-          color: isFocused ? theme.colors.primary : theme.colors.textSecondary,
-          size: 24 
-        });
+          const icon = options.tabBarIcon({ 
+            focused: isFocused, 
+            color: isFocused ? theme.colors.primary : theme.colors.textSecondary,
+            size: 24 
+          });
 
-        const label = options.tabBarLabel || route.name;
+          const label = options.tabBarLabel || route.name;
 
-        return (
-          <TouchableOpacity
-            key={route.key}
-            onPress={() => navigation.navigate(route.name)}
-            style={styles.tabItem}
-            activeOpacity={0.7}
-          >
-            <View style={styles.tabItemContent}>
-              {icon}
-              <Text style={[
-                styles.tabLabel,
-                { color: isFocused ? theme.colors.primary : theme.colors.textSecondary }
-              ]}>
-                {label}
-              </Text>
-              {isFocused && <View style={[styles.indicator, { backgroundColor: theme.colors.primary }]} />}
-            </View>
-          </TouchableOpacity>
-        );
-      })}
-    </View>
+          return (
+            <TouchableOpacity
+              key={route.key}
+              onPress={() => navigation.navigate(route.name)}
+              style={styles.tabItem}
+              activeOpacity={0.7}
+            >
+              <View style={styles.tabItemContent}>
+                {icon}
+                <Text style={[
+                  styles.tabLabel,
+                  { color: isFocused ? theme.colors.primary : theme.colors.textSecondary }
+                ]}>
+                  {label}
+                </Text>
+                {isFocused && <View style={[styles.indicator, { backgroundColor: theme.colors.primary }]} />}
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    </SafeAreaView>
   );
 };
 

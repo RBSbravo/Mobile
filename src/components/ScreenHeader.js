@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.04,
     shadowRadius: 2,
     zIndex: 10,
-    width: '100%',
   },
   left: {
     width: 40,

@@ -132,7 +132,7 @@ const HomeScreen = ({ navigation }) => {
           subtitle={"Here's a look at your day."}
         />
         <ScrollView 
-          contentContainerStyle={[styles.scrollContent, { paddingHorizontal: isTablet ? 32 : 16, paddingVertical: 16 }]}
+          contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16, paddingBottom: Platform.OS === 'ios' ? 90 : 70 }]}
           showsVerticalScrollIndicator={false}
           bounces={false}
         >
@@ -193,6 +193,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
+    padding: customTheme.spacing.lg,
   },
   statsGrid: {
     flexDirection: 'row',
