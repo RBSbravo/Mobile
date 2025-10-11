@@ -221,9 +221,6 @@ const MainTabs = () => {
       tabBar={props => <CustomTabBar {...props} />}
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {
-          display: 'none',
-        },
       }}
     >
       <Tab.Screen
@@ -321,6 +318,11 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? 90 : 70,
     backgroundColor: 'white', // Will be overridden by theme
     borderTopWidth: 1,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
   },
   tabItem: {
     flex: 1,

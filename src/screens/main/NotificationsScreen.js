@@ -248,7 +248,7 @@ const NotificationsScreen = () => {
   };
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right', 'bottom']}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
         style={{ flex: 1 }}
@@ -299,7 +299,7 @@ const NotificationsScreen = () => {
           refreshing={loading}
           onRefresh={fetchNotifications}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: isTablet ? 32 : 12, paddingBottom: isTablet ? 32 : 16 }}
+          contentContainerStyle={{ paddingHorizontal: isTablet ? 32 : 12, paddingBottom: 100 }}
         />
       )}
       </KeyboardAvoidingView>

@@ -225,7 +225,7 @@ const TasksScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right', 'bottom']}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={RNPlatform.OS === 'ios' ? 'padding' : 'height'}
@@ -272,7 +272,7 @@ const TasksScreen = ({ navigation }) => {
           keyExtractor={item => item.id}
           contentContainerStyle={[
             styles.listContent,
-            { padding: isTablet ? 32 : 16, paddingTop: 8 }
+            { padding: isTablet ? 32 : 16, paddingTop: 8, paddingBottom: 100 }
           ]}
           ListEmptyComponent={renderEmptyComponent}
           refreshControl={
