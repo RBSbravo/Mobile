@@ -135,7 +135,14 @@ const HomeScreen = ({ navigation }) => {
           contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16 }]}
           showsVerticalScrollIndicator={false}
           bounces={false}
+          style={{ flex: 1 }}
         >
+        {/* Debug: Add a test element to verify content is visible */}
+        <View style={{ backgroundColor: paperTheme.colors.primaryContainer, padding: 16, marginBottom: 16, borderRadius: 8 }}>
+          <Text style={{ color: paperTheme.colors.text, fontSize: 16, fontWeight: 'bold' }}>
+            Debug: Content should be visible at the top
+          </Text>
+        </View>
         <View style={{ marginVertical: customTheme.spacing.lg, backgroundColor: paperTheme.colors.border, height: 1, width: '100%' }} />
         <View style={{
           backgroundColor: paperTheme.colors.primaryContainer,
@@ -192,7 +199,6 @@ const HomeScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   scrollContent: {
-    flexGrow: 1,
     padding: customTheme.spacing.lg,
   },
   statsGrid: {
