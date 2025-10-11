@@ -291,6 +291,7 @@ const TaskDetailScreen = ({ route }) => {
       >
         <ScrollView 
           style={[styles.container, { backgroundColor: paperTheme.colors.background }]}
+          contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 16 }}
           showsVerticalScrollIndicator={false}
         >
       <Card 
@@ -679,7 +680,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   card: {
-    margin: 16,
+    marginBottom: 16,
   },
   description: {
     marginVertical: 16,
