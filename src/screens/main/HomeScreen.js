@@ -121,7 +121,7 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background, flex: 1 }]} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={{ backgroundColor: paperTheme.colors.background, flex: 1 }} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
         style={{ flex: 1 }}
@@ -132,10 +132,16 @@ const HomeScreen = ({ navigation }) => {
           subtitle={"Here's a look at your day."}
         />
         <ScrollView 
-          contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16 }]}
+          contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16, paddingBottom: 100 }]}
           showsVerticalScrollIndicator={false}
           bounces={false}
+          style={{ flex: 1 }}
         >
+        {/* Debug: Test if content is rendering */}
+        <View style={{ backgroundColor: 'red', height: 50, marginBottom: 20 }}>
+          <Text style={{ color: 'white', textAlign: 'center', paddingTop: 15 }}>DEBUG: Content is rendering</Text>
+        </View>
+        
         <View style={{ marginVertical: customTheme.spacing.lg, backgroundColor: paperTheme.colors.border, height: 1, width: '100%' }} />
         <View style={{
           backgroundColor: paperTheme.colors.primaryContainer,
@@ -193,7 +199,6 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
-    padding: customTheme.spacing.lg,
   },
   statsGrid: {
     flexDirection: 'row',

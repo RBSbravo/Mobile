@@ -85,6 +85,10 @@ export const lightTheme = {
     ...colors,
   },
   ...themeBase,
+  // Disable animations for web compatibility
+  animation: {
+    scale: 1,
+  },
 };
 
 export const darkTheme = {
@@ -95,6 +99,10 @@ export const darkTheme = {
     ...darkColors,
   },
   ...themeBase,
+  // Disable animations for web compatibility
+  animation: {
+    scale: 1,
+  },
 };
 
 // For legacy components that might not use the Paper provider theme

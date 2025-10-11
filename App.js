@@ -89,6 +89,7 @@ const AppContent = () => {
           onPress: hideError,
         }}
         style={{ backgroundColor: theme.colors.error }}
+        duration={4000}
       >
         {error}
       </Snackbar>

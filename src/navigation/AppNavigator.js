@@ -227,6 +227,12 @@ const MainTabs = () => {
       tabBar={props => <CustomTabBar {...props} />}
       screenOptions={{
         headerShown: false,
+        tabBarStyle: {
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+        },
       }}
     >
       <Tab.Screen
