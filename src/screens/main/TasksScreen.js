@@ -73,12 +73,9 @@ const TasksScreen = ({ navigation }) => {
   const fetchTasks = useCallback(async () => {
     try {
       const fetchedTasks = await api.getTasks(token, user.id);
-      setTasks(fetchedTasks || []);
+      setTasks(fetchedTasks);
     } catch (err) {
-      console.error('Failed to load tasks:', err);
       setError(err?.response?.data?.message || err?.message || 'Failed to load tasks. Please pull down to refresh.');
-      // Set empty array to prevent infinite loading
-      setTasks([]);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -136,19 +133,6 @@ const TasksScreen = ({ navigation }) => {
     }
     return () => clearTimeout(timeout);
   }, [loading]);
-
-  // Add timeout to prevent infinite loading
-  useEffect(() => {
-    const loadingTimeout = setTimeout(() => {
-      if (showSpinner) {
-        console.log('TasksScreen: Loading timeout reached, forcing content display');
-        setShowSpinner(false);
-        setError('Loading timeout. Please refresh the page.');
-      }
-    }, 10000); // 10 second timeout
-
-    return () => clearTimeout(loadingTimeout);
-  }, [showSpinner]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);

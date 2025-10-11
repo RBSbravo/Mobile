@@ -77,8 +77,32 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
 
 // Stack navigators for each tab
 const HomeStack = () => {
-  console.log('HomeStack: Rendering HomeScreen directly');
-  return <HomeScreen />;
+  const { theme } = useThemeContext();
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        animation: 'slide_from_right',
+        headerStyle: {
+          backgroundColor: theme.colors.background,
+        },
+        headerTintColor: theme.colors.primary,
+        headerTitleStyle: {
+          color: theme.colors.text,
+        }
+      }}
+    >
+      <Stack.Screen name="HomeMain" component={HomeScreen} />
+      <Stack.Screen 
+        name="TaskDetail" 
+        component={TaskDetailScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Task Details',
+        }}
+      />
+    </Stack.Navigator>
+  );
 };
 
 const TasksStack = () => {
@@ -178,8 +202,6 @@ const MainTabs = () => {
   const { user } = useAuth();
   const { unreadCount, refreshUnreadCount } = useNotification();
 
-  console.log('MainTabs: Rendering with user:', !!user);
-
   useEffect(() => {
     const fetchCount = async () => {
       if (user?.id) {
@@ -195,13 +217,15 @@ const MainTabs = () => {
   }, [user, refreshUnreadCount]);
 
   return (
-    <View style={{ flex: 1 }}>
-      <Tab.Navigator
-        tabBar={props => <CustomTabBar {...props} />}
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
+    <Tab.Navigator
+      tabBar={props => <CustomTabBar {...props} />}
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          display: 'none',
+        },
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={HomeStack}
@@ -261,29 +285,17 @@ const MainTabs = () => {
         }}
       />
     </Tab.Navigator>
-    </View>
   );
 };
 
 // App Navigator
 const AppNavigator = () => {
-  const { isAuthenticated, loading, logoutLoading, loginLoading, user, token } = useAuth();
-
-  console.log('AppNavigator render:', {
-    isAuthenticated,
-    loading,
-    logoutLoading,
-    loginLoading,
-    hasUser: !!user,
-    hasToken: !!token
-  });
+  const { isAuthenticated, loading, logoutLoading, loginLoading } = useAuth();
 
   if (loading) {
-    console.log('AppNavigator: Still loading, returning null');
+    // You might want to return a loading spinner here
     return null;
   }
-
-  console.log('AppNavigator: Rendering navigator, isAuthenticated:', isAuthenticated);
 
   return (
     <NotificationProvider>

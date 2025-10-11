@@ -8,14 +8,7 @@ const simulateNetworkDelay = (delay = 500) => new Promise(resolve => setTimeout(
 const handleApiResponse = async (response) => {
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    const errorMessage = errorData.error || errorData.message || `HTTP ${response.status}`;
-    console.error('API Error:', {
-      status: response.status,
-      statusText: response.statusText,
-      url: response.url,
-      errorData
-    });
-    throw new Error(errorMessage);
+    throw new Error(errorData.error || errorData.message || `HTTP ${response.status}`);
   }
   return response.json();
 };
