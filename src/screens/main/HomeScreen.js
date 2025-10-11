@@ -121,76 +121,23 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top']}>
-      <ScreenHeader
-        leftIcon={<View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: paperTheme.colors.primary, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>{user?.firstname ? user.firstname.charAt(0).toUpperCase() : 'U'}</Text></View>}
-        title={`Welcome, ${user?.firstname || 'User'}!`}
-        subtitle={"Here's a look at your day."}
-      />
-      <ScrollView 
-        style={{ flex: 1 }}
-        contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
-        showsVerticalScrollIndicator={false}
-        bounces={false}
-      >
-        {/* Debug info */}
-        <View style={{ backgroundColor: 'red', padding: 10, margin: 10 }}>
-          <Text style={{ color: 'white' }}>Debug: User: {user?.firstname || 'No user'}</Text>
-          <Text style={{ color: 'white' }}>Token: {token ? 'Yes' : 'No'}</Text>
-          <Text style={{ color: 'white' }}>Tasks: {tasks.length}</Text>
-          <Text style={{ color: 'white' }}>Notifications: {notifications.length}</Text>
-        </View>
-        
-        <View style={{ marginVertical: customTheme.spacing.lg, backgroundColor: paperTheme.colors.border, height: 1, width: '100%' }} />
-        <View style={{
-          backgroundColor: paperTheme.colors.primaryContainer,
-          borderRadius: customTheme.borderRadius.lg,
-          padding: isTablet ? customTheme.spacing.lg * 2 : customTheme.spacing.md,
-          marginBottom: customTheme.spacing.xl,
-          ...customTheme.shadows.sm,
-        }}>
-          <View style={[styles.statsGrid, { flexDirection: isTablet ? 'row' : 'column', gap: isTablet ? customTheme.spacing.lg : customTheme.spacing.md }]}> 
-            <View style={{ flex: 1, marginRight: isTablet ? customTheme.spacing.lg : customTheme.spacing.sm, marginBottom: isTablet ? 0 : customTheme.spacing.md }}>
-              <StatCard icon="assignment" label="Open Tasks" value={pendingTasks} />
-            </View>
-            <View style={{ flex: 1, marginLeft: isTablet ? customTheme.spacing.lg : customTheme.spacing.sm }}>
-              <StatCard icon="error" label="Overdue" value={overdueTasks} />
-            </View>
-          </View>
-        </View>
-        <View style={{ marginVertical: customTheme.spacing.lg, backgroundColor: paperTheme.colors.border, height: 1, width: '100%' }} />
-        <View style={styles.section}>
-          <Text variant="titleLarge" style={[styles.sectionTitle, { color: paperTheme.colors.text }]}>Recent Activity</Text>
-          {notifications.length > 0 ? notifications.slice(0, 1).map((n, idx) => (
-            <Card key={n.id || idx} style={[styles.activityCard, { backgroundColor: paperTheme.colors.surface, ...(paperTheme.dark && { borderColor: paperTheme.colors.border, borderWidth: 1 }) }]} mode="elevated">
-              <Card.Content style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <MaterialIcons name="notifications" size={28} color={paperTheme.colors.accent} style={{ marginRight: customTheme.spacing.md }} />
-                <View style={{ flex: 1 }}>
-                  <Text style={{ color: paperTheme.colors.text, fontFamily: customTheme.typography.fontFamily.medium, fontSize: isTablet ? 18 : 16 }}>{n.message || n.title || 'You have a new notification.'}</Text>
-                  {n.timestamp && (
-                    <Text style={{ color: paperTheme.colors.textSecondary, fontSize: isTablet ? 15 : 13, marginTop: 2 }}>{new Date(n.timestamp).toLocaleString()}</Text>
-                  )}
-                </View>
-              </Card.Content>
-            </Card>
-          )) : (
-            <Card style={[styles.activityCard, { backgroundColor: paperTheme.colors.surface }]} mode="elevated">
-              <Card.Content>
-                <Text style={{color: paperTheme.colors.text}}>No recent activity.</Text>
-              </Card.Content>
-            </Card>
-          )}
-        </View>
-      </ScrollView>
-      <Snackbar
-        visible={!!error}
-        onDismiss={() => setError("")}
-        duration={4000}
-        style={{ backgroundColor: paperTheme.colors.error }}
-      >
-        {error}
-      </Snackbar>
-    </SafeAreaView>
+    <View style={{ flex: 1, backgroundColor: 'red', padding: 20 }}>
+      <Text style={{ color: 'white', fontSize: 24, fontWeight: 'bold' }}>
+        TEST: HomeScreen is working!
+      </Text>
+      <Text style={{ color: 'white', fontSize: 16, marginTop: 10 }}>
+        User: {user?.firstname || 'No user'}
+      </Text>
+      <Text style={{ color: 'white', fontSize: 16 }}>
+        Token: {token ? 'Yes' : 'No'}
+      </Text>
+      <Text style={{ color: 'white', fontSize: 16 }}>
+        Auth Loading: {authLoading ? 'Yes' : 'No'}
+      </Text>
+      <Text style={{ color: 'white', fontSize: 16 }}>
+        Show Spinner: {showSpinner ? 'Yes' : 'No'}
+      </Text>
+    </View>
   );
 };
 
