@@ -23,7 +23,8 @@ SplashScreen.preventAutoHideAsync();
 
 const GlobalNotificationSnackbar = () => {
   const { theme } = useThemeContext();
-  const { realtimeNotifications } = useNotification();
+  const notificationContext = useNotification();
+  const { realtimeNotifications = [] } = notificationContext || {};
   const [visible, setVisible] = React.useState(false);
   const [message, setMessage] = React.useState('');
   const [shownNotificationIds, setShownNotificationIds] = React.useState(new Set());
@@ -79,38 +80,40 @@ const AppContent = () => {
   const { loading } = useAuth();
 
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer linking={linking}>
-        <AppNavigator />
-      </NavigationContainer>
-      <GlobalNotificationSnackbar />
-      <Snackbar
-        visible={!!error}
-        onDismiss={hideError}
-        action={{
-          label: 'Dismiss',
-          onPress: hideError,
-        }}
-        style={{ backgroundColor: theme.colors.error }}
-      >
-        {error}
-      </Snackbar>
-      {loading && (
-        <View style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.15)',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 9999
-        }}>
-          <ActivityIndicator size="large" color={theme.colors.primary} />
-        </View>
-      )}
-    </PaperProvider>
+    <NotificationProvider>
+      <PaperProvider theme={theme}>
+        <NavigationContainer linking={linking}>
+          <AppNavigator />
+        </NavigationContainer>
+        <GlobalNotificationSnackbar />
+        <Snackbar
+          visible={!!error}
+          onDismiss={hideError}
+          action={{
+            label: 'Dismiss',
+            onPress: hideError,
+          }}
+          style={{ backgroundColor: theme.colors.error }}
+        >
+          {error}
+        </Snackbar>
+        {loading && (
+          <View style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.15)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 9999
+          }}>
+            <ActivityIndicator size="large" color={theme.colors.primary} />
+          </View>
+        )}
+      </PaperProvider>
+    </NotificationProvider>
   );
 };
 

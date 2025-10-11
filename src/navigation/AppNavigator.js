@@ -8,7 +8,6 @@ import { theme } from '../theme';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import { useThemeContext } from '../context/ThemeContext';
-import { NotificationProvider, useNotification } from '../context/NotificationContext';
 import FullScreenLoader from '../components/FullScreenLoader';
 
 // Import screens
@@ -208,21 +207,6 @@ const AuthStack = () => (
 // Main Tab Navigator
 const MainTabs = () => {
   const { user } = useAuth();
-  const { unreadCount, refreshUnreadCount } = useNotification();
-
-  useEffect(() => {
-    const fetchCount = async () => {
-      if (user?.id) {
-        try {
-          const count = await api.getUnreadNotificationCount(user.id);
-          refreshUnreadCount(count);
-        } catch (error) {
-          console.error("Failed to fetch unread count:", error);
-        }
-      }
-    };
-    fetchCount();
-  }, [user, refreshUnreadCount]);
 
   return (
     <Tab.Navigator
@@ -267,25 +251,7 @@ const MainTabs = () => {
         options={{
           tabBarLabel: 'Notifications',
           tabBarIcon: ({ color, size }) => (
-            <View>
-              <MaterialIcons name="notifications" size={size} color={color} />
-              {unreadCount > 0 && (
-                <View style={{
-                  position: 'absolute',
-                  top: -4,
-                  right: -4,
-                  backgroundColor: theme.colors.error,
-                  borderRadius: 8,
-                  minWidth: 16,
-                  height: 16,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  paddingHorizontal: 2,
-                }}>
-                  <Text style={{ color: '#fff', fontSize: 10, fontWeight: 'bold' }}>{unreadCount}</Text>
-                </View>
-              )}
-            </View>
+            <MaterialIcons name="notifications" size={size} color={color} />
           ),
         }}
       />
@@ -312,7 +278,7 @@ const AppNavigator = () => {
   }
 
   return (
-    <NotificationProvider>
+    <>
       <Stack.Navigator 
         screenOptions={{ 
           headerShown: false,
@@ -351,7 +317,7 @@ const AppNavigator = () => {
       </Stack.Navigator>
       <FullScreenLoader visible={logoutLoading} message="Logging out..." />
       <FullScreenLoader visible={loginLoading} message="Logging in..." />
-    </NotificationProvider>
+    </>
   );
 };
 

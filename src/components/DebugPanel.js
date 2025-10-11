@@ -9,7 +9,8 @@ const DebugPanel = ({ visible, onClose }) => {
   const theme = useTheme();
   const { user, token, isAuthenticated, loading } = useAuth();
   const { theme: appTheme, toggleTheme } = useThemeContext();
-  const { unreadCount, realtimeNotifications } = useNotification();
+  const notificationContext = useNotification();
+  const { unreadCount = 0, realtimeNotifications = [] } = notificationContext || {};
   const [debugInfo, setDebugInfo] = useState({});
 
   useEffect(() => {

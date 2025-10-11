@@ -102,4 +102,16 @@ export const NotificationProvider = ({ children }) => {
   );
 };
 
-export const useNotification = () => useContext(NotificationContext); 
+export const useNotification = () => {
+  const context = useContext(NotificationContext);
+  if (!context) {
+    // Return default values if context is not available
+    return {
+      unreadCount: 0,
+      setUnreadCount: () => {},
+      refreshUnreadCount: () => {},
+      realtimeNotifications: []
+    };
+  }
+  return context;
+}; 
