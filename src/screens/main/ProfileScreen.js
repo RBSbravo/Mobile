@@ -218,7 +218,7 @@ const ProfileScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top']}>
       <Portal>
         <Dialog 
           visible={logoutDialogVisible} 
@@ -460,7 +460,7 @@ const ProfileScreen = ({ navigation }) => {
       >
         {error}
       </Snackbar>
-    </View>
+    </SafeAreaView>
   );
 };
 

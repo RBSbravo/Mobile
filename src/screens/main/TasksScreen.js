@@ -224,7 +224,7 @@ const TasksScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top']}>
       <ScreenHeader
         leftIcon={<MaterialIcons name="assignment" size={28} color={paperTheme.colors.primary} />}
         title="My Tasks"
@@ -345,7 +345,7 @@ const TasksScreen = ({ navigation }) => {
           {error}
         </Snackbar>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 };
 

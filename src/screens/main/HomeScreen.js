@@ -121,7 +121,7 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <View style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top']}>
       <ScreenHeader
         leftIcon={<View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: paperTheme.colors.primary, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>{user?.firstname ? user.firstname.charAt(0).toUpperCase() : 'U'}</Text></View>}
         title={`Welcome, ${user?.firstname || 'User'}!`}
@@ -182,7 +182,7 @@ const HomeScreen = ({ navigation }) => {
       >
         {error}
       </Snackbar>
-    </View>
+    </SafeAreaView>
   );
 };
 
