@@ -121,7 +121,7 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: paperTheme.colors.background }} edges={['top']}>
       <ScreenHeader
         leftIcon={<View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: paperTheme.colors.primary, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>{user?.firstname ? user.firstname.charAt(0).toUpperCase() : 'U'}</Text></View>}
         title={`Welcome, ${user?.firstname || 'User'}!`}
@@ -129,10 +129,18 @@ const HomeScreen = ({ navigation }) => {
       />
       <ScrollView 
         style={{ flex: 1 }}
-        contentContainerStyle={[styles.scrollContent, { padding: isTablet ? 32 : 16, paddingBottom: 100 }]}
+        contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
         bounces={false}
       >
+        {/* Debug info */}
+        <View style={{ backgroundColor: 'red', padding: 10, margin: 10 }}>
+          <Text style={{ color: 'white' }}>Debug: User: {user?.firstname || 'No user'}</Text>
+          <Text style={{ color: 'white' }}>Token: {token ? 'Yes' : 'No'}</Text>
+          <Text style={{ color: 'white' }}>Tasks: {tasks.length}</Text>
+          <Text style={{ color: 'white' }}>Notifications: {notifications.length}</Text>
+        </View>
+        
         <View style={{ marginVertical: customTheme.spacing.lg, backgroundColor: paperTheme.colors.border, height: 1, width: '100%' }} />
         <View style={{
           backgroundColor: paperTheme.colors.primaryContainer,
