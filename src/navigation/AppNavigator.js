@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Platform, View, TouchableOpacity, StyleSheet, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { theme } from '../theme';
 import { useAuth } from '../context/AuthContext';
@@ -35,48 +33,6 @@ const linking = {
   },
 };
 
-// Custom tab bar component
-const CustomTabBar = ({ state, descriptors, navigation }) => {
-  const { theme } = useThemeContext();
-  return (
-    <SafeAreaView style={{ backgroundColor: theme.colors.surface }} edges={['bottom']}>
-      <View style={[styles.tabBarContainer, { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.border }]}>
-        {state.routes.map((route, index) => {
-          const { options } = descriptors[route.key];
-          const isFocused = state.index === index;
-
-          const icon = options.tabBarIcon({ 
-            focused: isFocused, 
-            color: isFocused ? theme.colors.primary : theme.colors.textSecondary,
-            size: 24 
-          });
-
-          const label = options.tabBarLabel || route.name;
-
-          return (
-            <TouchableOpacity
-              key={route.key}
-              onPress={() => navigation.navigate(route.name)}
-              style={styles.tabItem}
-              activeOpacity={0.7}
-            >
-              <View style={styles.tabItemContent}>
-                {icon}
-                <Text style={[
-                  styles.tabLabel,
-                  { color: isFocused ? theme.colors.primary : theme.colors.textSecondary }
-                ]}>
-                  {label}
-                </Text>
-                {isFocused && <View style={[styles.indicator, { backgroundColor: theme.colors.primary }]} />}
-              </View>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    </SafeAreaView>
-  );
-};
 
 // Stack navigators for each tab
 const HomeStack = () => {
@@ -221,11 +177,18 @@ const MainTabs = () => {
 
   return (
     <Tab.Navigator
-      tabBar={props => <CustomTabBar {...props} />}
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          display: 'none',
+          backgroundColor: '#ffffff',
+          borderTopWidth: 1,
+          borderTopColor: '#e0e0e0',
+          height: 70,
+        },
+        tabBarActiveTintColor: '#2E7D32',
+        tabBarInactiveTintColor: '#757575',
+        tabBarLabelStyle: {
+          fontSize: 10,
         },
       }}
     >
@@ -317,38 +280,6 @@ const AppNavigator = () => {
     </NotificationProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  tabBarContainer: {
-    flexDirection: 'row',
-    height: Platform.OS === 'ios' ? 90 : 70,
-    backgroundColor: 'white', // Will be overridden by theme
-    borderTopWidth: 1,
-  },
-  tabItem: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  tabItemContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    width: '100%',
-  },
-  tabLabel: {
-    fontSize: 10,
-    fontFamily: theme.typography.fontFamily.medium,
-    marginTop: theme.spacing.xs,
-  },
-  indicator: {
-    position: 'absolute',
-    bottom: 0,
-    height: 3,
-    width: '40%',
-    borderRadius: 2,
-  },
-});
 
 export { linking };
 export default AppNavigator; 
