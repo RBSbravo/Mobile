@@ -248,7 +248,7 @@ const NotificationsScreen = () => {
   };
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background, flex: 1 }]} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
         style={{ flex: 1 }}
@@ -269,6 +269,7 @@ const NotificationsScreen = () => {
             />
           }
         />
+        <ScrollView style={{ flex: 1, paddingBottom: 100 }}>
       <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: isTablet ? 16 : 8 }}>
         {TABS.map(t => {
           let count = 0;
@@ -302,6 +303,7 @@ const NotificationsScreen = () => {
           contentContainerStyle={{ paddingHorizontal: isTablet ? 32 : 12, paddingBottom: isTablet ? 32 : 16 }}
         />
       )}
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

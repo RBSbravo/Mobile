@@ -222,7 +222,7 @@ const MainTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          display: 'none',
+          display: 'flex',
         },
       }}
     >
@@ -321,17 +321,24 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? 90 : 70,
     backgroundColor: 'white', // Will be overridden by theme
     borderTopWidth: 1,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
   },
   tabItem: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 8,
   },
   tabItemContent: {
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
     width: '100%',
+    position: 'relative',
   },
   tabLabel: {
     fontSize: 10,
