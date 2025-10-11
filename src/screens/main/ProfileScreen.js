@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Dimensions } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text, Card, Button, Avatar, useTheme, Dialog, Portal, ActivityIndicator, Title, Caption, TouchableRipple, Switch, Snackbar, TextInput, HelperText } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme, styles as globalStyles } from '../../theme';
@@ -219,11 +219,7 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[globalStyles.container, { backgroundColor: paperTheme.colors.background }]} edges={['top', 'left', 'right']}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-        style={{ flex: 1 }}
-      >
-        <Portal>
+      <Portal>
         <Dialog 
           visible={logoutDialogVisible} 
           onDismiss={() => setLogoutDialogVisible(false)}
@@ -455,15 +451,14 @@ const ProfileScreen = ({ navigation }) => {
           </TouchableRipple>
         </View>
       </ScrollView>
-        <Snackbar
-          visible={!!error}
-          onDismiss={() => setError("")}
-          duration={4000}
-          style={{ backgroundColor: theme.colors.error }}
-        >
-          {error}
-        </Snackbar>
-      </KeyboardAvoidingView>
+      <Snackbar
+        visible={!!error}
+        onDismiss={() => setError("")}
+        duration={4000}
+        style={{ backgroundColor: theme.colors.error }}
+      >
+        {error}
+      </Snackbar>
     </SafeAreaView>
   );
 };
