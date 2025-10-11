@@ -77,32 +77,8 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
 
 // Stack navigators for each tab
 const HomeStack = () => {
-  const { theme } = useThemeContext();
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        animation: 'slide_from_right',
-        headerStyle: {
-          backgroundColor: theme.colors.background,
-        },
-        headerTintColor: theme.colors.primary,
-        headerTitleStyle: {
-          color: theme.colors.text,
-        }
-      }}
-    >
-      <Stack.Screen name="HomeMain" component={HomeScreen} />
-      <Stack.Screen 
-        name="TaskDetail" 
-        component={TaskDetailScreen}
-        options={{
-          headerShown: true,
-          headerTitle: 'Task Details',
-        }}
-      />
-    </Stack.Navigator>
-  );
+  console.log('HomeStack: Rendering HomeScreen directly');
+  return <HomeScreen />;
 };
 
 const TasksStack = () => {
@@ -201,6 +177,8 @@ const AuthStack = () => (
 const MainTabs = () => {
   const { user } = useAuth();
   const { unreadCount, refreshUnreadCount } = useNotification();
+
+  console.log('MainTabs: Rendering with user:', !!user);
 
   useEffect(() => {
     const fetchCount = async () => {
